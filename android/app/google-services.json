@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "497310989743",
+    "project_id": "orienteeringapp-b0c1d",
+    "storage_bucket": "orienteeringapp-b0c1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497310989743:android:7d2693a1ea603739bac35a",
+        "android_client_info": {
+          "package_name": "com.eceokutan.check_point"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497310989743-lfqis0ji8pjlopehdpb10a91i5hhg62i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa9-3HhBcAEUqlrBR1mqiuw4imISUel-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497310989743-lfqis0ji8pjlopehdpb10a91i5hhg62i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "497310989743-9gpvbklt5sbaet690l8elldtlnbp716t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.orienteeringApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

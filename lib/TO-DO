@@ -1,0 +1,13 @@
+-Fotoğraf çekebil
+-Kod ve database arasında sorun olmadan yeni map ekleyebil.
+-"admin hesap" ve harita ekleme-silme
+ * Login ve signup
+ * Qr okuma 
+ * GPS ile konum takibi
+ * Parkur raporunun hazırlanması
+ * 2 Diğer kullanıcılar görecek şekilde post paylaşılması
+ * 2 Kullanıcıların diğer kullanıcılarla etkileşime girebilmesi (yorum, takip, like)
+ * 2 Süper admin, admin,userlar yetkilendirmesi
+ * 2 Başarı sıralandırma
+
+ 
