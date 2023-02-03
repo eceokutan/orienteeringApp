@@ -10,16 +10,16 @@ ParkourModel parkourModelFromJson(String str) =>
 String parkourModelToJson(ParkourModel data) => json.encode(data.toJson());
 
 class ParkourModel {
-  ParkourModel({
-    this.name = "",
-    this.id = "",
-    this.checkPointCount = "",
-    this.checkPointList = const [],
-    this.mapImageUrl = "",
-    this.leaderBoard = "",
-    this.createdDate = "",
-    this.createdBy = "",
-  });
+  ParkourModel(
+      {this.name = "",
+      this.id = "",
+      this.checkPointCount = "",
+      this.checkPointList = const [],
+      this.mapImageUrl = "",
+      this.leaderBoard = "",
+      this.createdDate = "",
+      this.createdBy = "",
+      this.description = ""});
 
   String name;
   String id;
@@ -29,6 +29,8 @@ class ParkourModel {
   String leaderBoard;
   String createdDate;
   String createdBy;
+
+  String description;
 
   factory ParkourModel.fromJson(Map<String, dynamic> json) => ParkourModel(
         name: json["name"],
@@ -40,6 +42,7 @@ class ParkourModel {
         leaderBoard: json["leaderBoard"],
         createdDate: json["createdDate"],
         createdBy: json["createdBy"],
+        description: json["description"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,5 +54,6 @@ class ParkourModel {
         "leaderBoard": leaderBoard,
         "createdDate": createdDate,
         "createdBy": createdBy,
+        "description": description,
       };
 }

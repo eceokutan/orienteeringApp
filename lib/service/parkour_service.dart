@@ -1,10 +1,11 @@
-import 'dart:io';
+import 'dart:io' as io;
 
+import 'package:check_point/models/file_model.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 class ParkourService {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -12,7 +13,7 @@ class ParkourService {
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   Future<String> uploadSingleFile(
-      {required File? file, required String childPath}) async {
+      {required io.File? file, required String childPath}) async {
     Reference firebaseStorageRef = firebaseStorage.ref().child(childPath);
     UploadTask uploadTask = firebaseStorageRef.putFile(file!);
 
@@ -65,15 +66,20 @@ class ParkourService {
   }
 
   void addAllParkours() async {
-    var existingParkours = await firebaseFirestore.collection("parkous");
+    var existingParkours = firebaseFirestore.collection("parkous");
     //parkur var mı yok mu? id üzerinden bak.
     for (var parkourAsMap in parkourListAsMap) {
       addParkour(ParkourModel.fromJson(parkourAsMap));
     }
   }
 
-  Future<List<File>> pickImages() async {
-    List<File> imageFiles = [];
+  Future<io.File> compressImage(String path) async {
+    return await FlutterNativeImage.compressImage(path,
+        quality: 30, percentage: 50);
+  }
+
+  Future<List<FileModel>> pickParkourImages() async {
+    List<FileModel> imageFiles = [];
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
@@ -83,33 +89,22 @@ class ParkourService {
     if (result != null) {
       for (var item in result.files) {
         if (item.bytes != null) {
-          // io.File file = await compressImage(item.path!);
+          io.File file = await compressImage(item.path!);
 
-          // imageFiles.add(
-
-          //   FileModel(
-          //   fileTypeExtension:
-          //       item.extension == "svg" ? "svg+xml" : item.extension!,
-          //   file: file,
-          //   fileBytes: await file.readAsBytes(),
-          //   fileName: item.name,
-          // )
-
-          //    );
-
-          //  imageFiles.add(item);
+          imageFiles.add(FileModel(
+            fileTypeExtension:
+                item.extension == "svg" ? "svg+xml" : item.extension!,
+            file: file,
+            fileBytes: await file.readAsBytes(),
+            fileName: item.name,
+          ));
         }
       }
     }
     return imageFiles;
   }
 
-  void addParkour(ParkourModel parkourmodel) async {
-    File? mapImage;
-
-    parkourmodel.mapImageUrl = await uploadSingleFile(
-        file: mapImage, childPath: "parkours/${parkourmodel.id}");
-
+  Future<void> addParkour(ParkourModel parkourmodel) async {
     var ref = firebaseFirestore.collection("parkours").doc(); //123 id
 
     parkourmodel.id = ref.id;

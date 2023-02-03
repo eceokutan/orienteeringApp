@@ -1,17 +1,14 @@
-import 'dart:developer';
-import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SignUpPage.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
 import 'firebase_options.dart';
 import 'service/auth_service.dart';
 
 //test
-//test2 
+//test2
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -46,6 +43,7 @@ class _FirstPageState extends State<FirstPage> {
   @override
   bool authenticated = false;
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -53,7 +51,7 @@ class _FirstPageState extends State<FirstPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            new Image.asset(
+            Image.asset(
               'images/compass.png',
               width: 200,
               height: 200,
@@ -77,7 +75,7 @@ class _FirstPageState extends State<FirstPage> {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) {
-                        return LogInPage();
+                        return const LogInPage();
                       },
                     ), (route) => false);
                   },
@@ -91,7 +89,7 @@ class _FirstPageState extends State<FirstPage> {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (context) {
-                        return SignUpPage();
+                        return const SignUpPage();
                       },
                     ), (route) => false);
                   },
@@ -193,7 +191,7 @@ class _LogInPageState extends State<LogInPage> {
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) {
-                          return SignUpPage();
+                          return const SignUpPage();
                         },
                       ), (route) => false);
                     },
