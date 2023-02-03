@@ -11,6 +11,7 @@ import 'firebase_options.dart';
 import 'service/auth_service.dart';
 
 //test
+//test2 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
