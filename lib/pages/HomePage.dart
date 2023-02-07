@@ -12,6 +12,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+        body: Center(child: Column()),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Parkours',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_box),
+              label: 'My Account',
+            ),
+          ],
+        ));
   }
 }

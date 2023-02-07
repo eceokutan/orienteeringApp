@@ -1,6 +1,7 @@
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SignUpPage.dart';
 import 'package:check_point/pages/LogInPage.dart';
+import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.orange,
         ),
-        home: const FirstPage());
+        home: const HomePage());
     //home: const ParkoursPage());
+    //home: const FirstPage());
   }
 }
 
