@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
 import '../service/auth_service.dart';
 import '../main.dart';
+import '../pages/LogInPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -91,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                         builder: (context) {
-                          return LogInPage();
+                          return const LogInPage();
                         },
                       ), (route) => false);
                     },
