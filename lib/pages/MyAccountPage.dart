@@ -37,7 +37,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
         body: ListView(children: <Widget>[
           Container(
-            height: 200,
+            height: 150,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -73,19 +73,56 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           color: Colors.white,
                         ),
                       ),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Followers",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "100",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Following",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "100",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'ADMIN?',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                ),
               ),
             ]),
           ),

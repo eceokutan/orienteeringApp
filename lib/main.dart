@@ -5,6 +5,7 @@ import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'service/auth_service.dart';
@@ -13,6 +14,9 @@ import 'service/auth_service.dart';
 //test2
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //il logged in?
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,9 +35,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.orange,
         ),
-        home: const HomePage());
-    //home: const ParkoursPage());
-    //home: const FirstPage());
+        //home: const HomePage());
+        //home: const ParkoursPage());
+        //home: const FirstPage());
+        home: const LogInPage());
   }
 }
 
