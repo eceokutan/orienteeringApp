@@ -1,4 +1,4 @@
-import 'package:check_point/pages/LogInPage.dart';
+import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -13,15 +13,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //code for bottom nav
   int currentTabIndex = 0;
-  List<Widget> tabs = [HomePage(), ParkoursPage(), LogInPage()];
+  List<Widget> tabs = [HomePage(), ParkoursPage(), MyAccountPage()];
   onTapped(int index) {
+    if (index == currentTabIndex) {
+      return;
+    }
     setState(() {
       currentTabIndex = index;
     });
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
   }
+  //end of code for bottom nav
 
   @override
   Widget build(BuildContext context) {

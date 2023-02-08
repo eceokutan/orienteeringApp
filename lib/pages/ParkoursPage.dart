@@ -4,7 +4,7 @@ import 'package:check_point/pages/create_parkour_page.dart';
 import 'package:check_point/pages/parkour_detail_page.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:check_point/pages/LogInPage.dart';
+import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/main.dart';
 
@@ -24,8 +24,11 @@ class _ParkoursPageState extends State<ParkoursPage> {
 
   //code for bottom nav
   int currentTabIndex = 1;
-  List<Widget> tabs = [HomePage(), ParkoursPage(), LogInPage()];
+  List<Widget> tabs = [HomePage(), ParkoursPage(), MyAccountPage()];
   onTapped(int index) {
+    if (index == currentTabIndex) {
+      return;
+    }
     setState(() {
       currentTabIndex = index;
     });
