@@ -58,6 +58,7 @@ class ParkourService {
   ];
   Future<List<ParkourModel>> getParkours() async {
     var snapshot = await firebaseFirestore.collection("parkours").get();
+    
     List<ParkourModel> parkours = [];
     for (var parkourAsMap in snapshot.docs) {
       parkours.add(ParkourModel.fromJson(parkourAsMap.data()));

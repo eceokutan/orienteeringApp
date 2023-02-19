@@ -1,14 +1,12 @@
-import 'package:check_point/pages/ParkoursPage.dart';
-import 'package:check_point/pages/SignUpPage.dart';
-import 'package:check_point/pages/LogInPage.dart';
 import 'package:check_point/pages/HomePage.dart';
-import 'package:check_point/pages/parkour_view_model.dart';
+import 'package:check_point/pages/LogInPage.dart';
+import 'package:check_point/pages/SignUpPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
-import 'service/auth_service.dart';
 
 //test
 //test2
@@ -18,10 +16,12 @@ void main() async {
 
   //il logged in?
 
+  sharedPrefs = await SharedPreferences.getInstance();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await ParkourViewModel().getParkours();
+  // await ParkourViewModel().getParkours();
 
   runApp(const MyApp());
 }
@@ -43,6 +43,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+var sharedPrefs;
+
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
   @override
@@ -50,13 +52,19 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  //bool authenticated = false;
+  bool authenticated = false;
+
+  @override
   void initState() {
-    if (AuthService.rememberMe == true) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+    super.initState();
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      if (sharedPrefs.getBool("rememberMe") ?? false) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     }
   }
 

@@ -1,12 +1,8 @@
-import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
-import '../service/auth_service.dart';
-import '../main.dart';
+
 import '../pages/LogInPage.dart';
+import '../service/auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -19,6 +15,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +79,46 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     child: const Text('Sign Up'),
-                    onPressed: () {
-                      AuthService.signUp(
-                          email: mailController.text,
-                          password: passwordController.text);
+                    onPressed: () async {
+                      try {
+                        await AuthService()
+                            .signUp(
+                                email: mailController.text,
+                                password: passwordController.text)
+                            .then((userCredantial) async {
+                          await AuthService().addUser(
+                              userCredantial.user!.uid,
+                              userNameController.text,
+                              userCredantial.user!.email!);
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("HATA"),
+                              content: Text(e.toString()),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Tamam"))
+                              ],
+                            );
+                          },
+                        );
+
+                        // if (e.code == 'weak-password') {
+
+                        //   print('The password provided is too weak.');
+                        // } else if (e.code == 'email-already-in-use') {
+                        //   print('The account already exists for that email.');
+                        // }
+
+                      } catch (e) {
+                        print(e);
+                      }
 
                       //FirebaseFirestore firestore = FirebaseFirestore.instance;
                       print(mailController.text);
@@ -93,6 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   )),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text('Have an account?'),
                   TextButton(
@@ -109,7 +143,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   )
                 ],
-                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ],
           )),

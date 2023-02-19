@@ -1,13 +1,10 @@
-import 'dart:developer';
 import 'package:check_point/pages/HomePage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
-import '../service/auth_service.dart';
-import '../main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../pages/SignUpPage.dart';
+import '../service/auth_service.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -17,7 +14,6 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
-  bool _savePassword = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
@@ -65,20 +61,7 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                 ),
               ),
-              CheckboxListTile(
-                value: _savePassword,
-                onChanged: (bool? newValue) {
-                  setState(() {
-                    _savePassword = newValue!;
-                  });
-                  if (_savePassword == true) {
-                    AuthService.setRememberMe(true);
-                  } else if (_savePassword == false) {
-                    AuthService.setRememberMe(false);
-                  }
-                },
-                title: const Text("Remember me"),
-              ),
+              const RememberMeButton(),
               TextButton(
                 onPressed: () {
                   //forgot password screen
@@ -92,22 +75,33 @@ class _LogInPageState extends State<LogInPage> {
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     child: const Text('Log In'),
-                    onPressed: () {
-                      AuthService.logIn(
-                        email: nameController.text,
-                        password: passwordController.text,
-                      );
-                      if (AuthService.successfullyLoggedIn()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                        );
+                    onPressed: () async {
+                      try {
+                        await AuthService()
+                            .logIn(
+                              email: nameController.text,
+                              password: passwordController.text,
+                            )
+                            .then((value) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
+                                ));
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided.');
+                        }
                       }
-                      //FirebaseFirestore firestore = FirebaseFirestore.instance;
-                      print(nameController.text);
-                      print(passwordController.text);
-                      print(AuthService.successfullyLoggedIn());
+
+                      // if (AuthService.successfullyLoggedIn()) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const HomePage()),
+                      //   );
+                      // }
                     },
                   )),
               Row(
@@ -132,6 +126,56 @@ class _LogInPageState extends State<LogInPage> {
               ),
             ],
           )),
+    );
+  }
+}
+
+class RememberMeButton extends StatefulWidget {
+  const RememberMeButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<RememberMeButton> createState() => _RememberMeButtonState();
+}
+
+class _RememberMeButtonState extends State<RememberMeButton> {
+  bool _savePassword = false;
+
+  @override
+  void initState() {
+
+    SharedPreferences.getInstance().then((value) {
+      setState(() {
+        _savePassword = value.getBool("rememberMe") ?? false;
+      });
+    });
+
+    
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: _savePassword,
+      onChanged: (bool? newValue) {
+
+
+        setState(() {
+          _savePassword = newValue!;
+        });
+
+        if (_savePassword == true) {
+          AuthService.setRememberMe(true);
+        } else if (_savePassword == false) {
+          AuthService.setRememberMe(false);
+        }
+
+
+        
+      },
+      title: const Text("Remember me"),
     );
   }
 }

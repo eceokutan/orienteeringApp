@@ -1,10 +1,9 @@
+import 'package:check_point/pages/LogInPage.dart';
 import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SocialPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:check_point/main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +15,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //code for bottom nav
   int currentTabIndex = 0;
-  List<Widget> tabs = [HomePage(), ParkoursPage(), MyAccountPage()];
+  List<Widget> tabs = [
+    const HomePage(),
+    const ParkoursPage(),
+    const MyAccountPage()
+  ];
   onTapped(int index) {
     if (index == currentTabIndex) {
       return;
@@ -35,16 +38,30 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SocialPage()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const SocialPage()));
               },
-              child: Icon(
+              child: const Icon(
                 Icons.people, // add custom icons also
               )),
-          title: Text("Home"),
-          actions: [],
+          title: const Text("Home"),
+          actions: const [],
         ),
-        body: Center(child: Column()),
+        body: Center(
+            child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut().then((value) =>
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                        builder: (context) {
+                          return const LogInPage();
+                        },
+                      ), (route) => true));
+                },
+                child: const Text("signout"))
+          ],
+        )),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
