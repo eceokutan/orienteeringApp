@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:check_point/pages/HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  bool _savePassword = false;
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
@@ -63,6 +65,20 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                 ),
               ),
+              CheckboxListTile(
+                value: _savePassword,
+                onChanged: (bool? newValue) {
+                  setState(() {
+                    _savePassword = newValue!;
+                  });
+                  if (_savePassword == true) {
+                    AuthService.setRememberMe(true);
+                  } else if (_savePassword == false) {
+                    AuthService.setRememberMe(false);
+                  }
+                },
+                title: const Text("Remember me"),
+              ),
               TextButton(
                 onPressed: () {
                   //forgot password screen
@@ -78,12 +94,20 @@ class _LogInPageState extends State<LogInPage> {
                     child: const Text('Log In'),
                     onPressed: () {
                       AuthService.logIn(
-                          email: nameController.text,
-                          password: passwordController.text);
-
+                        email: nameController.text,
+                        password: passwordController.text,
+                      );
+                      if (AuthService.successfullyLoggedIn()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                        );
+                      }
                       //FirebaseFirestore firestore = FirebaseFirestore.instance;
                       print(nameController.text);
                       print(passwordController.text);
+                      print(AuthService.successfullyLoggedIn());
                     },
                   )),
               Row(

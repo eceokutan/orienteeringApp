@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //https://blog.logrocket.com/implementing-firebase-authentication-in-a-flutter-app/
 class AuthService {
@@ -24,6 +25,24 @@ class AuthService {
     }
   }
 
+  static bool successfullyLoggedIn() {
+    bool toReturn = false;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        toReturn = false;
+      } else {
+        toReturn = true;
+      }
+    });
+    return toReturn;
+  }
+
+  static bool rememberMe = false;
+  static void setRememberMe(bool rememberme) {
+    rememberMe = rememberme;
+  }
+
   static void logIn({
     required String email,
     required String password,
@@ -34,6 +53,16 @@ class AuthService {
         email: email,
         password: password,
       );
+      /*
+      if (rememberMe) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString("email", email);
+        pref.setString("password", password);
+        //pref.setBool("rememberMe", true);
+        successfulLogin = true;
+        print(successfulLogin);
+      }
+      */
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

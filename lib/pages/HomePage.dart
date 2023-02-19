@@ -1,5 +1,6 @@
 import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
+import 'package:check_point/pages/SocialPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -31,6 +32,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => SocialPage()));
+              },
+              child: Icon(
+                Icons.people, // add custom icons also
+              )),
+          title: Text("Home"),
+          actions: [],
+        ),
         body: Center(child: Column()),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[

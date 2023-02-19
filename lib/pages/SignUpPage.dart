@@ -16,8 +16,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,21 +46,31 @@ class _SignUpPageState extends State<SignUpPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
-                  controller: nameController,
+                  controller: mailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'User Name',
+                    labelText: 'E-Mail',
                   ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                padding: const EdgeInsets.all(10),
                 child: TextField(
                   obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: userNameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'User Name',
                   ),
                 ),
               ),
@@ -73,11 +84,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: const Text('Sign Up'),
                     onPressed: () {
                       AuthService.signUp(
-                          email: nameController.text,
+                          email: mailController.text,
                           password: passwordController.text);
 
                       //FirebaseFirestore firestore = FirebaseFirestore.instance;
-                      print(nameController.text);
+                      print(mailController.text);
                       print(passwordController.text);
                     },
                   )),

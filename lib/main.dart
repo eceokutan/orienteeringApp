@@ -12,6 +12,7 @@ import 'service/auth_service.dart';
 
 //test
 //test2
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,8 +38,8 @@ class MyApp extends StatelessWidget {
         ),
         //home: const HomePage());
         //home: const ParkoursPage());
-        //home: const FirstPage());
-        home: const LogInPage());
+        home: const FirstPage());
+    //home: const LogInPage());
   }
 }
 
@@ -49,8 +50,15 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  @override
-  bool authenticated = false;
+  //bool authenticated = false;
+  void initState() {
+    if (AuthService.rememberMe == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
