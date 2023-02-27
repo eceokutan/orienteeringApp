@@ -29,6 +29,13 @@ class AuthService {
     });
   }
 
+  Future<Map<String,dynamic>?> getUserInfo(String userId) async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+
+    return snapshot.data();
+  }
+
   static bool successfullyLoggedIn() {
     bool toReturn = false;
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -43,12 +50,10 @@ class AuthService {
     return toReturn;
   }
 
-
   static void setRememberMe(bool rememberme) async {
     var sharedPrefs = await SharedPreferences.getInstance();
 
-   await sharedPrefs.setBool("rememberMe", rememberme);
-
+    await sharedPrefs.setBool("rememberMe", rememberme);
   }
 
   Future<void> logIn({

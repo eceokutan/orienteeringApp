@@ -1,12 +1,10 @@
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/pages/HomePage.dart';
+import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/create_parkour_page.dart';
 import 'package:check_point/pages/parkour_detail_page.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:check_point/pages/MyAccountPage.dart';
-import 'package:check_point/pages/ParkoursPage.dart';
-import 'package:check_point/main.dart';
 
 class ParkoursPage extends StatefulWidget {
   const ParkoursPage({super.key});
@@ -19,12 +17,19 @@ class _ParkoursPageState extends State<ParkoursPage> {
   ParkourViewModel parkourViewModel = ParkourViewModel();
   @override
   void initState() {
+    ParkourViewModel().getParkours().then((value) {
+      setState(() {});
+    });
     super.initState();
   }
 
   //code for bottom nav
   int currentTabIndex = 1;
-  List<Widget> tabs = [HomePage(), ParkoursPage(), MyAccountPage()];
+  List<Widget> tabs = [
+    const HomePage(),
+    const ParkoursPage(),
+    const MyAccountPage()
+  ];
   onTapped(int index) {
     if (index == currentTabIndex) {
       return;
@@ -71,7 +76,11 @@ class _ParkoursPageState extends State<ParkoursPage> {
                 ParkourModel parkour = parkourViewModel.parkours[index];
                 return ListTile(
                   title: Text(parkour.name),
-                  trailing: Image.network(parkour.mapImageUrl),
+                  trailing: parkour.mapImageUrl == ""
+                      ? const SizedBox(
+                          child: Text("Fotoğraf Yok!"),
+                        )
+                      : Image.network(parkour.mapImageUrl),
                   subtitle: Text(
                     parkour.description,
                     overflow: TextOverflow.ellipsis,

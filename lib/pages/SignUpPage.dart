@@ -86,10 +86,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                 email: mailController.text,
                                 password: passwordController.text)
                             .then((userCredantial) async {
-                          await AuthService().addUser(
-                              userCredantial.user!.uid,
-                              userNameController.text,
-                              userCredantial.user!.email!);
+                          await AuthService()
+                              .addUser(
+                                  userCredantial.user!.uid,
+                                  userNameController.text,
+                                  userCredantial.user!.email!)
+                              .then((value) => Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LogInPage()),
+                                  (route) => false));
                         });
                       } on FirebaseAuthException catch (e) {
                         showDialog(
