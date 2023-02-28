@@ -13,6 +13,8 @@ class ParkourViewModel {
 
   List<FileModel> parkourImages = [];
 
+  List<ParkourModel> parkours = [];
+
   Future<void> pickParkourImages() async {
     parkourImages = await ParkourService().pickParkourImages();
   }
@@ -26,11 +28,7 @@ class ParkourViewModel {
     await ParkourService().addParkour(parkour);
   }
 
-  List<ParkourModel> parkours = [];
-
   Future<void> getParkours() async {
     parkours = await ParkourService().getParkours();
-
-    ParkourViewModel();
   }
 }

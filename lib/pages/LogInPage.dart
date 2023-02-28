@@ -76,17 +76,19 @@ class _LogInPageState extends State<LogInPage> {
                   child: ElevatedButton(
                     child: const Text('Log In'),
                     onPressed: () async {
+                      // nameController.text = "admin@gmail.com";
+                      // passwordController.text = "admin12345";
                       try {
                         await AuthService()
                             .logIn(
                               email: nameController.text,
                               password: passwordController.text,
                             )
-                            .then((value) => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
-                                ));
+                            .then((value) => Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()),
+                                (route) => false));
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
@@ -144,14 +146,12 @@ class _RememberMeButtonState extends State<RememberMeButton> {
 
   @override
   void initState() {
-
     SharedPreferences.getInstance().then((value) {
       setState(() {
         _savePassword = value.getBool("rememberMe") ?? false;
       });
     });
 
-    
     super.initState();
   }
 
@@ -160,8 +160,6 @@ class _RememberMeButtonState extends State<RememberMeButton> {
     return CheckboxListTile(
       value: _savePassword,
       onChanged: (bool? newValue) {
-
-
         setState(() {
           _savePassword = newValue!;
         });
@@ -171,9 +169,6 @@ class _RememberMeButtonState extends State<RememberMeButton> {
         } else if (_savePassword == false) {
           AuthService.setRememberMe(false);
         }
-
-
-        
       },
       title: const Text("Remember me"),
     );

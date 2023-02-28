@@ -1,10 +1,8 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:check_point/pages/LogInPage.dart';
 import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
+import 'package:check_point/service/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:check_point/main.dart';
 
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
@@ -16,7 +14,11 @@ class MyAccountPage extends StatefulWidget {
 class _MyAccountPageState extends State<MyAccountPage> {
   //code for bottom nav
   int currentTabIndex = 2;
-  List<Widget> tabs = [HomePage(), ParkoursPage(), MyAccountPage()];
+  List<Widget> tabs = [
+    const HomePage(),
+    const ParkoursPage(),
+    const MyAccountPage()
+  ];
   onTapped(int index) {
     if (index == currentTabIndex) {
       return;
@@ -30,6 +32,21 @@ class _MyAccountPageState extends State<MyAccountPage> {
     });
   }
 
+  UserInfo userInfo = UserInfo();
+
+  @override
+  void initState() {
+    AuthService()
+        .getUserInfo(FirebaseAuth.instance.currentUser!.uid)
+        .then((value) {
+      userInfo = UserInfo().fromMap(value!);
+
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
   //end of code for bottom nav
   @override
   Widget build(BuildContext context) {
@@ -40,7 +57,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         body: ListView(children: <Widget>[
           Container(
             height: 150,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color.fromARGB(255, 222, 123, 24),
@@ -52,13 +69,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
               ),
             ),
             child: Column(children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                       backgroundColor: Color.fromARGB(245, 255, 255, 255),
                       minRadius: 55.0,
                       child: CircleAvatar(
@@ -68,8 +85,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   Column(
                     children: [
                       Text(
-                        'USERNAME',
-                        style: TextStyle(
+                        userInfo.email ?? "",
+                        style: const TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -79,7 +96,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                         children: [
                           Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Followers",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -88,8 +105,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                 ),
                               ),
                               Text(
-                                "100",
-                                style: TextStyle(
+                                userInfo.followers.toString(),
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                   color: Colors.white,
@@ -97,11 +114,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Column(
-                            children: [
+                            children: const [
                               Text(
                                 "Following",
                                 style: TextStyle(
@@ -147,5 +164,24 @@ class _MyAccountPageState extends State<MyAccountPage> {
           onTap: onTapped,
           currentIndex: currentTabIndex,
         ));
+  }
+}
+
+class UserInfo {
+  String? email;
+  String? username;
+  int? followers;
+
+  UserInfo({this.email, this.username, this.followers});
+
+  UserInfo fromMap(Map<String, dynamic> map) {
+    return UserInfo(
+        email: map["email"],
+        username: map["username"],
+        followers: map["followers"]);
+  }
+
+  Map<String, dynamic> toMap() {
+    return {"email": email, "username": username, "followers": followers};
   }
 }
