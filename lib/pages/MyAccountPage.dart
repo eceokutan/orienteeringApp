@@ -24,8 +24,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
     setState(() {
       currentTabIndex = index;
     });
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    });
   }
 
   //end of code for bottom nav

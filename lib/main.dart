@@ -1,5 +1,6 @@
 import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/LogInPage.dart';
+import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SignUpPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,10 +61,10 @@ class _FirstPageState extends State<FirstPage> {
 
     if (FirebaseAuth.instance.currentUser != null) {
       if (sharedPrefs.getBool("rememberMe") ?? false) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        Future.delayed(Duration.zero, () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
+        });
       }
     }
   }

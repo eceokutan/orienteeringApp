@@ -27,8 +27,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentTabIndex = index;
     });
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    });
   }
   //end of code for bottom nav
 
@@ -38,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const SocialPage()));
               },
               child: const Icon(

@@ -32,8 +32,10 @@ class _ParkoursPageState extends State<ParkoursPage> {
     setState(() {
       currentTabIndex = index;
     });
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
+    });
   }
   //end of code for bottom nav
 
