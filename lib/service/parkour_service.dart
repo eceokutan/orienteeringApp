@@ -24,41 +24,10 @@ class ParkourService {
     return url;
   }
 
-  List<Map<String, dynamic>> parkourListAsMap = [
-    {
-      "name": "1 parkur",
-      "id": "1",
-      "checkPointCount": "10",
-      "checkPointList": [],
-      "mapImage": "",
-      "leaderBoard": "",
-      "createdDate": "",
-      "createdBy": "Ece",
-    },
-    {
-      "name": "2 parkur",
-      "id": "2",
-      "checkPointCount": "5",
-      "checkPointList": [],
-      "mapImage": "",
-      "leaderBoard": "",
-      "createdDate": "",
-      "createdBy": "Yigit",
-    },
-    {
-      "name": "3 parkur",
-      "id": "3",
-      "checkPointCount": "5",
-      "checkPointList": [],
-      "mapImage": "",
-      "leaderBoard": "",
-      "createdDate": "",
-      "createdBy": "Yigit",
-    }
-  ];
+  List<Map<String, dynamic>> parkourListAsMap = [];
   Future<List<ParkourModel>> getParkours() async {
     var snapshot = await firebaseFirestore.collection("parkours").get();
-    
+
     List<ParkourModel> parkours = [];
     for (var parkourAsMap in snapshot.docs) {
       parkours.add(ParkourModel.fromJson(parkourAsMap.data()));
@@ -66,6 +35,7 @@ class ParkourService {
     return parkours;
   }
 
+  /*
   void addAllParkours() async {
     var existingParkours = firebaseFirestore.collection("parkous");
     //parkur var mı yok mu? id üzerinden bak.
@@ -73,6 +43,7 @@ class ParkourService {
       addParkour(ParkourModel.fromJson(parkourAsMap));
     }
   }
+  */
 
   Future<io.File> compressImage(String path) async {
     return await FlutterNativeImage.compressImage(path,

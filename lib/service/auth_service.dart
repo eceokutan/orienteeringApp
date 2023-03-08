@@ -25,11 +25,13 @@ class AuthService {
       "userName": userName,
       "email": email,
       "profilePhoto": profilePhoto,
-      "isAdmin": false
+      "isAdmin": false,
+      "followers": [],
+      "following": [],
     });
   }
 
-  Future<Map<String,dynamic>?> getUserInfo(String userId) async {
+  Future<Map<String, dynamic>?> getUserInfo(String userId) async {
     var snapshot =
         await FirebaseFirestore.instance.collection("users").doc(userId).get();
 

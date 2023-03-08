@@ -85,7 +85,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   Column(
                     children: [
                       Text(
-                        userInfo.email ?? "",
+                        userInfo.userName ?? "",
                         style: const TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -169,19 +169,26 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
 class UserInfo {
   String? email;
-  String? username;
-  int? followers;
+  String? userName;
+  List<dynamic>? followers;
+  List<dynamic>? following;
 
-  UserInfo({this.email, this.username, this.followers});
+  UserInfo({this.email, this.userName, this.followers, this.following});
 
   UserInfo fromMap(Map<String, dynamic> map) {
     return UserInfo(
         email: map["email"],
-        username: map["username"],
-        followers: map["followers"]);
+        userName: map["userName"],
+        followers: map["followers"],
+        following: map["following"]);
   }
 
   Map<String, dynamic> toMap() {
-    return {"email": email, "username": username, "followers": followers};
+    return {
+      "email": email,
+      "userName": userName,
+      "followers": followers,
+      "following": following
+    };
   }
 }

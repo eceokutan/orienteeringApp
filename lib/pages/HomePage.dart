@@ -4,6 +4,8 @@ import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SocialPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:check_point/service/gps_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,6 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String gpslocationtext = "gps text";
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -61,7 +64,14 @@ class _HomePageState extends State<HomePage> {
                         },
                       ), (route) => false));
                 },
-                child: const Text("signout"))
+                child: const Text("signout")),
+            ElevatedButton(
+                onPressed: () {
+                  gpslocationtext = GpsService().getGpsLongitude().toString();
+                  print(GpsService().getGpsLongitude().toString());
+                },
+                child: const Text("get current location")),
+            Text(gpslocationtext),
           ],
         )),
         bottomNavigationBar: BottomNavigationBar(
