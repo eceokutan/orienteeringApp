@@ -67,8 +67,9 @@ class _HomePageState extends State<HomePage> {
                 child: const Text("signout")),
             ElevatedButton(
                 onPressed: () {
-                  gpslocationtext = GpsService().getGpsLongitude().toString();
-                  print(GpsService().getGpsLongitude().toString());
+                  GpsService().getLocation();
+                  gpslocationtext = GpsService.lat;
+                  print(gpslocationtext);
                 },
                 child: const Text("get current location")),
             Text(gpslocationtext),

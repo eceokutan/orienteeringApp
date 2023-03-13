@@ -3,13 +3,13 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GpsService {
-  bool serviceEnabled = false;
   Future isServiceEnabled() async {
     LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
@@ -38,14 +38,15 @@ class GpsService {
     }
   }
 
-  Future getGpsLongitude() async {
-    print("here");
-    isServiceEnabled();
-    if (serviceEnabled == true) {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      return position.longitude;
-    }
-    return isServiceEnabled();
+  late Position position;
+  static String long = "", lat = "";
+  getLocation() async {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude); //Output: 80.24599079
+    print(position.latitude); //Output: 29.6593457
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
   }
 }
