@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/pages/parkour_view_model.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,12 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
   TextEditingController parkourNameController = TextEditingController();
 
   TextEditingController parkourDescriptionController = TextEditingController();
+
+  TextEditingController longtitudeController = TextEditingController();
+
+  TextEditingController latitudeController = TextEditingController();
+
+  List<CheckPoint> checkPoints = [];
 
   String link = "";
   @override
@@ -68,6 +77,68 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
                   child: const Text("Add Image +", style: TextStyle()),
                 ),
               ),
+            Row(
+              children: [
+                Expanded(
+                    child: TextField(
+                  controller: longtitudeController,
+                  decoration: const InputDecoration(hintText: "Longtitude"),
+                )),
+                const SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                    child: TextField(
+                  controller: latitudeController,
+                  decoration: const InputDecoration(hintText: "Latitude"),
+                )),
+                IconButton(
+                    onPressed: () {
+                      log(latitudeController.text);
+                      setState(() {
+                        try {
+                          checkPoints.add(CheckPoint(
+                              latitude: double.parse(latitudeController.text),
+                              longitude:
+                                  double.parse(longtitudeController.text)));
+                        } catch (e) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(title: Text(e.toString()));
+                            },
+                          );
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.add_box_rounded))
+              ],
+            ),
+            SizedBox(
+              height: 200,
+              child: ListView.builder(
+                itemCount: checkPoints.length,
+                itemBuilder: (context, index) {
+                  CheckPoint checkPoint = checkPoints[index];
+                  return Row(
+                    children: [
+                      Text(
+                          "${index + 1} ${checkPoint.longitude} - ${checkPoint.longitude}"),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              checkPoints.remove(checkPoint);
+                            });
+                          },
+                          icon: const Icon(Icons.remove))
+                    ],
+                  );
+                },
+              ),
+            ),
             if (ParkourViewModel().parkourImages.isNotEmpty)
               ElevatedButton(
                   onPressed: () async {
@@ -77,6 +148,8 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
                     ParkourModel parkour = ParkourModel(
                         name: parkourNameController.text,
                         mapImageUrl: incominglink,
+                        checkPointCount: checkPoints.length.toString(),
+                        checkPointList: checkPoints,
                         createdDate: DateTime.now().toIso8601String(),
                         description: parkourDescriptionController.text);
 

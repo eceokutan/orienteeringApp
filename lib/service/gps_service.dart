@@ -1,14 +1,17 @@
-import 'dart:developer';
-import 'dart:ffi';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GpsService {
+  GpsService._();
+
+  static final GpsService _instance = GpsService._();
+
+  factory GpsService() {
+    return _instance;
+  }
+
   Future isServiceEnabled() async {
     LocationPermission permission;
+
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
@@ -18,6 +21,7 @@ class GpsService {
       return false;
     }
     permission = await Geolocator.checkPermission();
+
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -39,10 +43,15 @@ class GpsService {
   }
 
   late Position position;
+
   static String long = "", lat = "";
-  getLocation() async {
+
+  Future<void> getLocation() async {
+    await isServiceEnabled();
+
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+
     print(position.longitude); //Output: 80.24599079
     print(position.latitude); //Output: 29.6593457
 

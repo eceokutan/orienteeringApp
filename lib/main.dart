@@ -1,7 +1,7 @@
 import 'package:check_point/pages/HomePage.dart';
 import 'package:check_point/pages/LogInPage.dart';
-import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SignUpPage.dart';
+import 'package:check_point/service/gps_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //il logged in?
+
+  GpsService().position.longitude;
+
+  
 
   sharedPrefs = await SharedPreferences.getInstance();
 

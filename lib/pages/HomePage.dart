@@ -2,10 +2,9 @@ import 'package:check_point/pages/LogInPage.dart';
 import 'package:check_point/pages/MyAccountPage.dart';
 import 'package:check_point/pages/ParkoursPage.dart';
 import 'package:check_point/pages/SocialPage.dart';
+import 'package:check_point/service/gps_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:check_point/service/gps_service.dart';
-import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,11 +33,12 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
     });
   }
+
   //end of code for bottom nav
+  String gpslocationtext = "gps text";
 
   @override
   Widget build(BuildContext context) {
-    String gpslocationtext = "gps text";
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -68,7 +68,10 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () {
                   GpsService().getLocation();
-                  gpslocationtext = GpsService.lat;
+
+                  setState(() {
+                    gpslocationtext = GpsService.lat;
+                  });
                   print(gpslocationtext);
                 },
                 child: const Text("get current location")),

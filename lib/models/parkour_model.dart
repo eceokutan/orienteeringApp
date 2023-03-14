@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:check_point/models/check_point.dart';
+
 ParkourModel parkourModelFromJson(String str) =>
     ParkourModel.fromJson(json.decode(str));
 
@@ -24,7 +26,7 @@ class ParkourModel {
   String name;
   String id;
   String checkPointCount;
-  List<dynamic> checkPointList;
+  List<CheckPoint> checkPointList;
   String mapImageUrl;
   String leaderBoard;
   String createdDate;
@@ -37,7 +39,7 @@ class ParkourModel {
         id: json["id"],
         checkPointCount: json["checkPointCount"],
         checkPointList:
-            List<dynamic>.from(json["checkPointList"].map((x) => x)),
+            List<CheckPoint>.from(json["checkPointList"].map((x) => x)),
         mapImageUrl: json["mapImage"],
         leaderBoard: json["leaderBoard"],
         createdDate: json["createdDate"],
@@ -49,7 +51,8 @@ class ParkourModel {
         "name": name,
         "id": id,
         "checkPointCount": checkPointCount,
-        "checkPointList": List<dynamic>.from(checkPointList.map((x) => x)),
+        "checkPointList":
+            List<dynamic>.from(checkPointList.map((x) => x.toJson())),
         "mapImage": mapImageUrl,
         "leaderBoard": leaderBoard,
         "createdDate": createdDate,
