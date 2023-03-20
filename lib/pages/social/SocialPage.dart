@@ -37,7 +37,7 @@ class _SocialPageState extends State<SocialPage> {
         ),
         ElevatedButton(
             onPressed: () async {
-              // 
+              //
               var snapshot = await FirebaseFirestore.instance
                   .collection("users")
                   .where("userName", isEqualTo: searchController.text)
@@ -51,7 +51,7 @@ class _SocialPageState extends State<SocialPage> {
 
               setState(() {});
             },
-            child: const Text("Search")),
+            child: const Text("Search blabla")),
         const SizedBox(
           height: 20,
         ),
