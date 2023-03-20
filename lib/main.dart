@@ -16,11 +16,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //il logged in?
-
-  GpsService().position.longitude;
-
-  
-
   sharedPrefs = await SharedPreferences.getInstance();
 
   await Firebase.initializeApp(

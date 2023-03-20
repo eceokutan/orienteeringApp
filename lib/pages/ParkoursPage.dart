@@ -48,6 +48,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text("Parkur Adet:${ParkourViewModel().parkours.length}"),
           actions: [
             ElevatedButton(

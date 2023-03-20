@@ -52,6 +52,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text("My Account"),
         ),
         body: ListView(children: <Widget>[
@@ -128,7 +129,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                 ),
                               ),
                               Text(
-                                "100",
+                                userInfo.following.toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
