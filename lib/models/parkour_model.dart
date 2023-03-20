@@ -11,6 +11,14 @@ ParkourModel parkourModelFromJson(String str) =>
 
 String parkourModelToJson(ParkourModel data) => json.encode(data.toJson());
 
+List<int> sayilar = [1, 2, 3, 4];
+
+getsayilar() {
+  List<String> sayilarAsString = [];
+
+  sayilarAsString = sayilar.map((e) => "$e").toList();
+}
+
 class ParkourModel {
   ParkourModel(
       {this.name = "",
@@ -38,8 +46,9 @@ class ParkourModel {
         name: json["name"],
         id: json["id"],
         checkPointCount: json["checkPointCount"],
-        checkPointList:
-            List<CheckPoint>.from(json["checkPointList"].map((x) => x)),
+        checkPointList: (json["checkPointList"] as List<dynamic>)
+            .map((x) => CheckPoint.fromJson(x))
+            .toList(),
         mapImageUrl: json["mapImage"],
         leaderBoard: json["leaderBoard"],
         createdDate: json["createdDate"],

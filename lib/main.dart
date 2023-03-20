@@ -1,7 +1,8 @@
-import 'package:check_point/pages/HomePage.dart';
-import 'package:check_point/pages/LogInPage.dart';
-import 'package:check_point/pages/SignUpPage.dart';
-import 'package:check_point/service/gps_service.dart';
+import 'dart:developer';
+
+import 'package:check_point/pages/auth/LogInPage.dart';
+import 'package:check_point/pages/auth/SignUpPage.dart';
+import 'package:check_point/pages/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         //home: const HomePage());
         //home: const ParkoursPage());
-        home: const FirstPage());
+        home: FirebaseAuth.instance.currentUser == null
+            ? const FirstPage()
+            : const HomePage());
     //home: const LogInPage());
   }
 }
@@ -58,14 +61,14 @@ class _FirstPageState extends State<FirstPage> {
   void initState() {
     super.initState();
 
-    if (FirebaseAuth.instance.currentUser != null) {
-      if (sharedPrefs.getBool("rememberMe") ?? false) {
-        Future.delayed(Duration.zero, () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HomePage()));
-        });
-      }
-    }
+    // if (FirebaseAuth.instance.currentUser != null) {
+    //   if (sharedPrefs.getBool("rememberMe") ?? false) {
+    //     Future.delayed(Duration.zero, () {
+    //       Navigator.push(context,
+    //           MaterialPageRoute(builder: (context) => const HomePage()));
+    //     });
+    //   }
+    // }
   }
 
   @override
@@ -82,6 +85,11 @@ class _FirstPageState extends State<FirstPage> {
               height: 200,
               fit: BoxFit.cover,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  log(FirebaseAuth.instance.currentUser.toString());
+                },
+                child: const Text("aaa")),
             Text(
               "CheckPoint",
               style: TextStyle(

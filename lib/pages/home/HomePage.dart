@@ -1,7 +1,9 @@
-import 'package:check_point/pages/LogInPage.dart';
-import 'package:check_point/pages/MyAccountPage.dart';
-import 'package:check_point/pages/ParkoursPage.dart';
-import 'package:check_point/pages/SocialPage.dart';
+import 'dart:developer';
+
+import 'package:check_point/pages/auth/LogInPage.dart';
+import 'package:check_point/pages/my_account/MyAccountPage.dart';
+import 'package:check_point/pages/parkour/ParkoursPage.dart';
+import 'package:check_point/pages/social/SocialPage.dart';
 import 'package:check_point/service/gps_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,24 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   //code for bottom nav
-  int currentTabIndex = 0;
-  List<Widget> tabs = [
-    const HomePage(),
-    const ParkoursPage(),
-    const MyAccountPage()
-  ];
-  onTapped(int index) {
-    if (index == currentTabIndex) {
-      return;
-    }
-    setState(() {
-      currentTabIndex = index;
-    });
-    Future.delayed(Duration.zero, () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
-    });
-  }
 
   //end of code for bottom nav
   String gpslocationtext = "gps text";
@@ -78,23 +62,61 @@ class _HomePageState extends State<HomePage> {
             Text(gpslocationtext),
           ],
         )),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compass_calibration_outlined),
-              label: 'Parkours',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
-              label: 'My Account',
-            ),
-          ],
-          onTap: onTapped,
-          currentIndex: currentTabIndex,
-        ));
+        bottomNavigationBar: const CustomNavbar());
+  }
+}
+
+class CustomNavbar extends StatefulWidget {
+  const CustomNavbar({
+    super.key,
+  });
+
+  @override
+  State<CustomNavbar> createState() => _CustomNavbarState();
+}
+
+class _CustomNavbarState extends State<CustomNavbar> {
+  List<Widget> pages = [
+    const HomePage(),
+    const ParkoursPage(),
+    const MyAccountPage()
+  ];
+
+  static int currentTabIndex = 0;
+
+  onTapped(int index) {
+    if (index == currentTabIndex) {
+      return;
+    }
+    setState(() {
+      currentTabIndex = index;
+    });
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => pages[currentTabIndex]));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log("build navbar ");
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.compass_calibration_outlined),
+          label: 'Parkours',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_box),
+          label: 'My Account',
+        ),
+      ],
+      onTap: onTapped,
+      currentIndex: currentTabIndex,
+    );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:check_point/pages/HomePage.dart';
-import 'package:check_point/pages/ParkoursPage.dart';
+import 'package:check_point/pages/home/HomePage.dart';
+import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +12,8 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-  //code for bottom nav
-  int currentTabIndex = 2;
-  List<Widget> tabs = [
-    const HomePage(),
-    const ParkoursPage(),
-    const MyAccountPage()
-  ];
-  onTapped(int index) {
-    if (index == currentTabIndex) {
-      return;
-    }
-    setState(() {
-      currentTabIndex = index;
-    });
-    Future.delayed(Duration.zero, () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
-    });
-  }
 
+ 
   UserInfo userInfo = UserInfo();
 
   @override
@@ -50,6 +32,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
   //end of code for bottom nav
   @override
   Widget build(BuildContext context) {
+   
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -119,8 +103,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             width: 20,
                           ),
                           Column(
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 "Following",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -130,7 +114,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                               ),
                               Text(
                                 userInfo.following.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                   color: Colors.white,
@@ -147,24 +131,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ]),
           ),
         ]),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compass_calibration_outlined),
-              label: 'Parkours',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
-              label: 'My Account',
-            ),
-          ],
-          onTap: onTapped,
-          currentIndex: currentTabIndex,
-        ));
+        bottomNavigationBar:  const CustomNavbar());
   }
 }
 

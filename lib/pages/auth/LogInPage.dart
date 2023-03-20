@@ -1,10 +1,10 @@
-import 'package:check_point/pages/HomePage.dart';
+import 'package:check_point/pages/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pages/SignUpPage.dart';
-import '../service/auth_service.dart';
+import 'SignUpPage.dart';
+import '../../service/auth_service.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});

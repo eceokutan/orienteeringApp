@@ -1,9 +1,9 @@
 import 'package:check_point/models/parkour_model.dart';
-import 'package:check_point/pages/HomePage.dart';
-import 'package:check_point/pages/MyAccountPage.dart';
-import 'package:check_point/pages/create_parkour_page.dart';
-import 'package:check_point/pages/parkour_detail_page.dart';
-import 'package:check_point/pages/parkour_view_model.dart';
+import 'package:check_point/pages/home/HomePage.dart';
+import 'package:check_point/pages/my_account/MyAccountPage.dart';
+import 'package:check_point/pages/parkour/create_parkour_page.dart';
+import 'package:check_point/pages/parkour/parkour_detail_page.dart';
+import 'package:check_point/viewmodels/parkour_view_model.dart';
 import 'package:flutter/material.dart';
 
 class ParkoursPage extends StatefulWidget {
@@ -24,24 +24,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
   }
 
   //code for bottom nav
-  int currentTabIndex = 1;
-  List<Widget> tabs = [
-    const HomePage(),
-    const ParkoursPage(),
-    const MyAccountPage()
-  ];
-  onTapped(int index) {
-    if (index == currentTabIndex) {
-      return;
-    }
-    setState(() {
-      currentTabIndex = index;
-    });
-    Future.delayed(Duration.zero, () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => tabs[currentTabIndex]));
-    });
-  }
+
   //end of code for bottom nav
 
   @override
@@ -104,23 +87,6 @@ class _ParkoursPageState extends State<ParkoursPage> {
             ),
           )
         ]),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compass_calibration_outlined),
-              label: 'Parkours',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
-              label: 'My Account',
-            ),
-          ],
-          onTap: onTapped,
-          currentIndex: currentTabIndex,
-        ));
+        bottomNavigationBar:  const CustomNavbar());
   }
 }

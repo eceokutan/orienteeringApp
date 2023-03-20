@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:check_point/models/file_model.dart';
@@ -25,10 +26,13 @@ class ParkourService {
   }
 
   List<Map<String, dynamic>> parkourListAsMap = [];
+
   Future<List<ParkourModel>> getParkours() async {
     var snapshot = await firebaseFirestore.collection("parkours").get();
 
     List<ParkourModel> parkours = [];
+
+    log(snapshot.docs.first.data().toString());
     for (var parkourAsMap in snapshot.docs) {
       parkours.add(ParkourModel.fromJson(parkourAsMap.data()));
     }
