@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:check_point/pages/auth/LogInPage.dart';
-import 'package:check_point/pages/my_account/MyAccountPage.dart';
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/pages/social/SocialPage.dart';
 import 'package:check_point/service/gps_service.dart';

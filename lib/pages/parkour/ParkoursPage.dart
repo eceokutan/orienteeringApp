@@ -1,6 +1,6 @@
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/pages/home/HomePage.dart';
-import 'package:check_point/pages/my_account/MyAccountPage.dart';
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/parkour/create_parkour_page.dart';
 import 'package:check_point/pages/parkour/parkour_detail_page.dart';
 import 'package:check_point/viewmodels/parkour_view_model.dart';
@@ -87,6 +87,6 @@ class _ParkoursPageState extends State<ParkoursPage> {
             ),
           )
         ]),
-        bottomNavigationBar:  const CustomNavbar());
+        bottomNavigationBar: const CustomNavbar());
   }
 }
