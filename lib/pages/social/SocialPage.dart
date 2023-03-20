@@ -1,3 +1,4 @@
+import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _SocialPageState extends State<SocialPage> {
             controller: searchController,
           ),
         ),
-        ElevatedButton(
+        AsyncButton(
             onPressed: () async {
               //
               // asd
@@ -66,5 +67,19 @@ class _SocialPageState extends State<SocialPage> {
         )
       ]),
     );
+  }
+}
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

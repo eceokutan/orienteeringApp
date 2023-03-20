@@ -1,10 +1,11 @@
+import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'SignUpPage.dart';
 import '../../service/auth_service.dart';
+import 'SignUpPage.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -73,11 +74,12 @@ class _LogInPageState extends State<LogInPage> {
               Container(
                   height: 50,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ElevatedButton(
+                  child: AsyncButton(
                     child: const Text('Log In'),
                     onPressed: () async {
                       // nameController.text = "admin@gmail.com";
                       // passwordController.text = "admin12345";
+
                       try {
                         await AuthService()
                             .logIn(
@@ -91,9 +93,39 @@ class _LogInPageState extends State<LogInPage> {
                                 (route) => false));
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("HATA"),
+                                content: Text(e.toString()),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Tamam"))
+                                ],
+                              );
+                            },
+                          );
                         } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided.');
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("HATA"),
+                                content: Text(e.toString()),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Tamam"))
+                                ],
+                              );
+                            },
+                          );
                         }
                       }
 
