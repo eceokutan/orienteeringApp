@@ -3,6 +3,7 @@ import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:check_point/pages/accounts/EditAccountPage.dart';
 
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
@@ -12,8 +13,6 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-
- 
   UserInfo userInfo = UserInfo();
 
   @override
@@ -32,8 +31,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
   //end of code for bottom nav
   @override
   Widget build(BuildContext context) {
-   
-
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -128,10 +125,18 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   ),
                 ],
               ),
+              ElevatedButton(
+                  child: const Text("Edit Page"),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return EditAccountPage();
+                    }));
+                  })
             ]),
           ),
         ]),
-        bottomNavigationBar:  const CustomNavbar());
+        bottomNavigationBar: const CustomNavbar());
   }
 }
 

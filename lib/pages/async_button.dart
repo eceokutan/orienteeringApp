@@ -40,7 +40,9 @@ class _AsyncButtonState extends State<AsyncButton> {
           : InkWell(
               onTap: _completeProcess,
               child: Container(
-                decoration: const BoxDecoration(color: Colors.amber),
+                decoration: const BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
                 padding: const EdgeInsets.all(10),
                 child: widget.child,
               )),

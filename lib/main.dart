@@ -85,11 +85,6 @@ class _FirstPageState extends State<FirstPage> {
               height: 200,
               fit: BoxFit.cover,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  log(FirebaseAuth.instance.currentUser.toString());
-                },
-                child: const Text("aaa")),
             Text(
               "CheckPoint",
               style: TextStyle(
