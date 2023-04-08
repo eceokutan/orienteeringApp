@@ -125,16 +125,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   ),
                 ],
               ),
-              ElevatedButton(
-                  child: const Text("Edit Page"),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return EditAccountPage();
-                    }));
-                  })
             ]),
           ),
+          ElevatedButton(
+              child: const Text("Edit Page"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return EditAccountPage();
+                }));
+              })
         ]),
         bottomNavigationBar: const CustomNavbar());
   }
