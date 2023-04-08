@@ -63,14 +63,6 @@ class AuthService {
       password: password,
     );
 
-    log(result.toString());
-
-    // if (rememberMe) {
-    //   SharedPreferences pref = await SharedPreferences.getInstance();
-    //   pref.setString("email", email);
-    //   pref.setString("password", password);
-    //   //pref.setBool("rememberMe", true);
-    //   successfulLogin = true;
-    //   print(successfulLogin);
+    
   }
 }

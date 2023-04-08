@@ -1,5 +1,8 @@
 import 'package:check_point/models/parkour_model.dart';
+import 'package:check_point/models/run_model.dart';
 import 'package:check_point/pages/run/run_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ParkourDetailPage extends StatelessWidget {
@@ -13,12 +16,24 @@ class ParkourDetailPage extends StatelessWidget {
         children: [
           Image.network(parkour.mapImageUrl),
           TextButton(
-              onPressed: () {
+              onPressed: () async {
+                var runModelRef =
+                    FirebaseFirestore.instance.collection("runs").doc();
+
+                RunModel runModel = RunModel(
+                  id: runModelRef.id,
+                  parkour: parkour,
+                  userId: FirebaseAuth.instance.currentUser!.uid,
+                  startDateTime: DateTime.now(),
+                );
+
+                await runModelRef.set(runModel.toMap());
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return const RunPage();
+                      return RunPage(runModel: runModel);
                     },
                   ),
                 );

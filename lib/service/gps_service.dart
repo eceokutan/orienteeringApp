@@ -42,20 +42,13 @@ class GpsService {
     }
   }
 
-  late Position position;
 
-  static String long = "", lat = "";
-
-  Future<void> getLocation() async {
+  Future<Position> getLocation() async {
     await isServiceEnabled();
 
-    position = await Geolocator.getCurrentPosition(
+  Position  position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
 
-    print(position.longitude); //Output: 80.24599079
-    print(position.latitude); //Output: 29.6593457
-
-    long = position.longitude.toString();
-    lat = position.latitude.toString();
+    return position;
   }
 }

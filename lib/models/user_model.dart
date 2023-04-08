@@ -6,6 +6,7 @@ class UserModel {
   List<dynamic>? following;
   String? id;
   String? profilePhoto;
+  List<String>? runIds;
 
   UserModel(
       {this.email,
@@ -36,4 +37,7 @@ class UserModel {
       "following": following
     };
   }
+
+
+
 }
