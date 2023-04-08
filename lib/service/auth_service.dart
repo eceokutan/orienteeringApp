@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:check_point/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,17 +19,10 @@ class AuthService {
     );
   }
 
-  Future<void> addUser(String userId, String userName, String email,
-      {String profilePhoto = ""}) async {
-    await FirebaseFirestore.instance.collection("users").doc(userId).set({
-      "id": userId,
-      "userName": userName,
-      "email": email,
-      "profilePhoto": profilePhoto,
-      "isAdmin": false,
-      "followers": [],
-      "following": [],
-    });
+  Future<void> addUser(UserModel user) async {
+    await FirebaseFirestore.instance.collection("users").doc(user.id).set(
+          user.toMap(),
+        );
   }
 
   Future<Map<String, dynamic>?> getUserInfo(String userId) async {

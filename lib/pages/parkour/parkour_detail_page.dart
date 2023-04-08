@@ -1,4 +1,5 @@
 import 'package:check_point/models/parkour_model.dart';
+import 'package:check_point/pages/run/run_page.dart';
 import 'package:flutter/material.dart';
 
 class ParkourDetailPage extends StatelessWidget {
@@ -11,6 +12,18 @@ class ParkourDetailPage extends StatelessWidget {
       body: Column(
         children: [
           Image.network(parkour.mapImageUrl),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const RunPage();
+                    },
+                  ),
+                );
+              },
+              child: const Text("Başla"))
         ],
       ),
     );

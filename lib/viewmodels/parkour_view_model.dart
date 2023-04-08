@@ -31,4 +31,5 @@ class ParkourViewModel {
   Future<void> getParkours() async {
     parkours = await ParkourService().getParkours();
   }
+  
 }

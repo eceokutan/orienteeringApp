@@ -1,8 +1,9 @@
+import 'package:check_point/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'LogInPage.dart';
 import '../../service/auth_service.dart';
+import 'LogInPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -86,12 +87,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                 email: mailController.text,
                                 password: passwordController.text)
                             .then((userCredantial) async {
-                          await AuthService()
-                              .addUser(
-                                  userCredantial.user!.uid,
-                                  userNameController.text,
-                                  userCredantial.user!.email!)
-                              .then((value) => Navigator.pushAndRemoveUntil(
+                          UserModel user = UserModel(
+                              id: userCredantial.user!.uid,
+                              userName: userNameController.text,
+                              email: userCredantial.user!.email!);
+
+                          await AuthService().addUser(user).then((value) =>
+                              Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const LogInPage()),
@@ -121,7 +123,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         // } else if (e.code == 'email-already-in-use') {
                         //   print('The account already exists for that email.');
                         // }
-
                       } catch (e) {
                         print(e);
                       }

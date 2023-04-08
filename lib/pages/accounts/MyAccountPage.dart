@@ -1,3 +1,4 @@
+import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/service/auth_service.dart';
@@ -13,14 +14,14 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-  UserInfo userInfo = UserInfo();
+  UserModel userInfo = UserModel();
 
   @override
   void initState() {
     AuthService()
         .getUserInfo(FirebaseAuth.instance.currentUser!.uid)
         .then((value) {
-      userInfo = UserInfo().fromMap(value!);
+      userInfo = UserModel().fromMap(value!);
 
       setState(() {});
     });
@@ -139,28 +140,3 @@ class _MyAccountPageState extends State<MyAccountPage> {
   }
 }
 
-class UserInfo {
-  String? email;
-  String? userName;
-  List<dynamic>? followers;
-  List<dynamic>? following;
-
-  UserInfo({this.email, this.userName, this.followers, this.following});
-
-  UserInfo fromMap(Map<String, dynamic> map) {
-    return UserInfo(
-        email: map["email"],
-        userName: map["userName"],
-        followers: map["followers"],
-        following: map["following"]);
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      "email": email,
-      "userName": userName,
-      "followers": followers,
-      "following": following
-    };
-  }
-}
