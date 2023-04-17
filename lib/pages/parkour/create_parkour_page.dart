@@ -98,6 +98,7 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
                       setState(() {
                         try {
                           checkPoints.add(CheckPoint(
+                              id: (checkPoints.length).toString(),
                               latitude: double.parse(latitudeController.text),
                               longitude:
                                   double.parse(longtitudeController.text)));

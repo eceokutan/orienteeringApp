@@ -10,6 +10,7 @@
 
 import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/run_model.dart';
+import 'package:check_point/pages/run/run_controller.dart';
 import 'package:check_point/service/gps_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _RunPageState extends State<RunPage> {
   Position? _currentPosition;
 
   bool isPositionCorrect = false;
+  int checkPointId = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,55 +41,30 @@ class _RunPageState extends State<RunPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-                widget.runModel.parkour!.checkPointList[0].latitude.toString()),
-            Text(widget.runModel.parkour!.checkPointList[0].longitude
-                .toString()),
             Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
             Text(" currentLongitude: ${_currentPosition?.longitude}" ?? "null"),
             ElevatedButton(
                 onPressed: () async {
                   _currentPosition = await GpsService().getLocation();
-
-                  bool isLatituteCorrect = false;
-
-                  bool isLongitudeCorrect = false;
-
                   CheckPoint currentCheckPoint =
-                      widget.runModel.parkour!.checkPointList[0];
+                      widget.runModel.parkour!.checkPointList[checkPointId];
 
-                  if ((_currentPosition!.latitude <
-                          currentCheckPoint.latitude! + 0.00003) &&
-                      (_currentPosition!.latitude >
-                          (currentCheckPoint.latitude! - 0.00003))) {
-                    isLatituteCorrect = true;
-                  }
-
-                  if ((_currentPosition!.longitude <
-                          currentCheckPoint.longitude! + 0.00003) &&
-                      (_currentPosition!.longitude >
-                          (currentCheckPoint.longitude! - 0.00003))) {
-                    isLongitudeCorrect = true;
-                  }
-
-                  if (isLatituteCorrect && isLongitudeCorrect) {
+                  if (RunController()
+                      .checkPosition(_currentPosition!, currentCheckPoint)) {
                     isPositionCorrect = true;
 
-                    CheckModel checkModel = CheckModel(
-                      checkPointId: currentCheckPoint.id,
-                      checkDateTime: DateTime.now(),
-                    );
-
-                    var runRef = FirebaseFirestore.instance
-                        .collection("runs")
-                        .doc(widget.runModel.id);
-
-                    var checkRef =
-                        runRef.collection("checks").doc(checkModel.id);
-
-                    checkModel.id = checkRef.id;
-
-                    checkRef.set(checkModel.toMap());
+                    if (checkPointId + 1 <=
+                        widget.runModel.parkour!.checkPointList.length) {
+                      checkPointId++;
+                      CheckModel checkModel = CheckModel(
+                        checkPointId: currentCheckPoint.id,
+                        checkDateTime: DateTime.now(),
+                      );
+                      await RunController()
+                          .createCheck(checkModel, widget.runModel.id!);
+                    } else {
+                      //end
+                    }
                   } else {
                     isPositionCorrect = false;
                   }
@@ -95,7 +72,7 @@ class _RunPageState extends State<RunPage> {
                   setState(() {});
                 },
                 child: const Text("Check")),
-            Text("Aynı mı? ${isPositionCorrect ? "Doğru" : "Yanlış"}"),
+            Text("Ayni mi? ${isPositionCorrect ? "Doğru" : "Yanlis"}"),
           ],
         ));
   }
