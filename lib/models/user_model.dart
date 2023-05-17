@@ -1,4 +1,3 @@
-
 class UserModel {
   String? email;
   String? userName;
@@ -37,7 +36,4 @@ class UserModel {
       "following": following
     };
   }
-
-
-
 }

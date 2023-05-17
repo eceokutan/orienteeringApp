@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:check_point/pages/accounts/EditAccountPage.dart';
 
+import '../parkour/parkour_detail_page.dart';
+
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
 
@@ -37,7 +39,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           automaticallyImplyLeading: false,
           title: const Text("My Account"),
         ),
-        body: ListView(children: <Widget>[
+        body: Column(children: <Widget>[
           Container(
             height: 150,
             decoration: const BoxDecoration(
@@ -134,9 +136,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return EditAccountPage();
                 }));
-              })
+              }),
+          Expanded(
+            child: RunsListView(
+              fieldName: "userId",
+              idToSearch: userInfo.id.toString(),
+            ),
+          )
         ]),
         bottomNavigationBar: const CustomNavbar());
   }
 }
-

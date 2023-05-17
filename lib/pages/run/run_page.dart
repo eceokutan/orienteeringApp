@@ -10,6 +10,7 @@
 
 import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/run_model.dart';
+import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/run/run_controller.dart';
 import 'package:check_point/service/gps_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,11 +39,30 @@ class _RunPageState extends State<RunPage> {
           title: Text(widget.runModel.parkour!.name),
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
-            Text(" currentLongitude: ${_currentPosition?.longitude}" ?? "null"),
+            GestureDetector(
+              child: Image.network(widget.runModel.parkour!.mapImageUrl),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    content: InteractiveViewer(
+                        maxScale: 3,
+                        minScale: 0.1,
+                        child: Image.network(
+                            widget.runModel.parkour!.mapImageUrl)),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                );
+              },
+            ),
+            Text("Next CheckPoint: ${checkPointId}" ?? "null"),
+            if (checkPointId == 0)
+              Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
+            if (checkPointId == 0)
+              Text(" currentLongitude: ${_currentPosition?.longitude}" ??
+                  "null"),
             ElevatedButton(
                 onPressed: () async {
                   _currentPosition = await GpsService().getLocation();
@@ -53,7 +73,7 @@ class _RunPageState extends State<RunPage> {
                       .checkPosition(_currentPosition!, currentCheckPoint)) {
                     isPositionCorrect = true;
 
-                    if (checkPointId + 1 <=
+                    if (checkPointId + 1 <
                         widget.runModel.parkour!.checkPointList.length) {
                       checkPointId++;
                       CheckModel checkModel = CheckModel(
@@ -64,6 +84,28 @@ class _RunPageState extends State<RunPage> {
                           .createCheck(checkModel, widget.runModel.id!);
                     } else {
                       //end
+                      await RunController()
+                          .endRun(widget.runModel.id!)
+                          .then((value) => showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Text("completed"),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomePage()),
+                                                (route) => false);
+                                          },
+                                          child: Text("Go to Home Page"))
+                                    ],
+                                  );
+                                },
+                              ));
                     }
                   } else {
                     isPositionCorrect = false;
@@ -72,7 +114,7 @@ class _RunPageState extends State<RunPage> {
                   setState(() {});
                 },
                 child: const Text("Check")),
-            Text("Ayni mi? ${isPositionCorrect ? "Doğru" : "Yanlis"}"),
+            Text("Correct? ${isPositionCorrect ? "Correct" : "False"}"),
           ],
         ));
   }

@@ -24,7 +24,8 @@ class ParkourDetailPage extends StatelessWidget {
                   id: runModelRef.id,
                   parkour: parkour,
                   userId: FirebaseAuth.instance.currentUser!.uid,
-                  startDateTime: DateTime.now(),
+                  startDateTime: DateTime.now().toIso8601String(),
+                  parkourId: parkour.id,
                 );
 
                 await runModelRef.set(runModel.toMap());
@@ -38,9 +39,55 @@ class ParkourDetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text("Başla"))
+              child: const Text("Başla")),
+          Expanded(
+            child: RunsListView(
+              fieldName: "parkourId",
+              idToSearch: parkour.id,
+            ),
+          )
         ],
       ),
+    );
+  }
+}
+
+class RunsListView extends StatefulWidget {
+  RunsListView({Key? key, required this.fieldName, required this.idToSearch})
+      : super(key: key);
+  String fieldName; //parkourId or userId
+  String idToSearch;
+  @override
+  State<RunsListView> createState() => _RunsListViewState();
+}
+
+class _RunsListViewState extends State<RunsListView> {
+  List<RunModel> runs = [];
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) async {
+      var results = await FirebaseFirestore.instance
+          .collection("runs")
+          .where(widget.fieldName, isEqualTo: widget.idToSearch)
+          .get();
+      for (var element in results.docs) {
+        runs.add(RunModel().fromMap(element.data()));
+      }
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: runs.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(runs[index].id.toString()),
+        );
+      },
     );
   }
 }

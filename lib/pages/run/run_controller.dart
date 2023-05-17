@@ -53,4 +53,12 @@ class RunController {
       return false;
     }
   }
+
+  Future endRun(String runId) async {
+    //saat kaydetme
+    var runRef = await FirebaseFirestore.instance
+        .collection("runs")
+        .doc(runId)
+        .update({"endDateTime": DateTime.now().toIso8601String()});
+  }
 }

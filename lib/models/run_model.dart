@@ -4,8 +4,9 @@ class RunModel {
   String? id;
   String? userId;
   ParkourModel? parkour;
-  DateTime? startDateTime;
-  DateTime? endDateTime;
+  String? startDateTime;
+  String? endDateTime;
+  String? parkourId;
 
   RunModel({
     this.id,
@@ -13,15 +14,17 @@ class RunModel {
     this.parkour,
     this.startDateTime,
     this.endDateTime,
+    this.parkourId,
   });
 
   RunModel fromMap(Map<String, dynamic> map) {
     return RunModel(
       id: map["id"],
       userId: map["userId"],
-      parkour: map["parkour"],
+      parkour: ParkourModel.fromJson(map["parkour"]),
       endDateTime: map["endDateTime"],
       startDateTime: map["startDateTime"],
+      parkourId: map["parkourId"],
     );
   }
 
@@ -30,8 +33,9 @@ class RunModel {
       "id": id,
       "userId": userId,
       "parkour": parkour!.toJson(),
-      "startDateTime": startDateTime?.toIso8601String(),
-      "endDateTime": endDateTime?.toIso8601String(),
+      "startDateTime": startDateTime,
+      "endDateTime": endDateTime,
+      "parkourId": parkourId,
     };
   }
 }
