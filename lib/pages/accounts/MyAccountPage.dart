@@ -2,6 +2,7 @@ import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/service/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:check_point/pages/accounts/EditAccountPage.dart';
@@ -90,7 +91,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                 ),
                               ),
                               Text(
-                                userInfo.followers.toString(),
+                                (userInfo.followers ?? 0).toString(),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -113,7 +114,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                 ),
                               ),
                               Text(
-                                userInfo.following.toString(),
+                                (userInfo.following ?? 0).toString(),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -139,8 +140,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
               }),
           Expanded(
             child: RunsListView(
-              fieldName: "userId",
-              idToSearch: userInfo.id.toString(),
+              function: () async {
+                return await FirebaseFirestore.instance
+                    .collection("runs")
+                    .where("userId",
+                        isEqualTo:
+                            FirebaseAuth.instance.currentUser!.uid.toString())
+                    .orderBy("timeTaken")
+                    .get();
+              },
             ),
           )
         ]),

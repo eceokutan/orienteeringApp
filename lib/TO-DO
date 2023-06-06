@@ -1,16 +1,8 @@
--Fotoğraf çekebil
--Kod ve database arasında sorun olmadan yeni map ekleyebil.
--"admin hesap" ve harita ekleme-silme
- * Login ve signup
- * Qr okuma 
- * GPS ile konum takibi
- * Parkur raporunun hazırlanması
- * 2 Diğer kullanıcılar görecek şekilde post paylaşılması
- * 2 Kullanıcıların diğer kullanıcılarla etkileşime girebilmesi (yorum, takip, like)
- * 2 Süper admin, admin,userlar yetkilendirmesi
- * 2 Başarı sıralandırma
-
-17 MAY
-- create parkour onay atmalı
-
- 
+//post içerik
+//postlayan kişinin kullanıcısına yönlendirebilmeli
+//hangi parkur? başlık yazmalı basında yönlendirmeli
+//kaç dakikada bitirdi kullanıcı parkuru?
+//sıralaması kaç oldu kullanıcının?
+//görsel olarak parkuru içermeli
+//tercihen kullanıcı post atarken bir başlık veya açıklama yazabilsin ("kolay parkurdu!" etc)
+//kullanıcı postlarken postu silme opsiyonuna sahip olmalı

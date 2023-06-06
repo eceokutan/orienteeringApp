@@ -54,11 +54,17 @@ class RunController {
     }
   }
 
-  Future endRun(String runId) async {
+  Future endRun(String runId, String startTimeString) async {
     //saat kaydetme
+    DateTime nowTime = DateTime.now();
+    DateTime startTime = DateTime.parse(startTimeString);
+    Duration totalTime = nowTime.difference(startTime);
     var runRef = await FirebaseFirestore.instance
         .collection("runs")
         .doc(runId)
-        .update({"endDateTime": DateTime.now().toIso8601String()});
+        .update({
+      "endDateTime": nowTime.toIso8601String(),
+      "timeTaken": totalTime.inMilliseconds
+    });
   }
 }

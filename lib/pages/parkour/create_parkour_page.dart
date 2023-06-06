@@ -4,6 +4,9 @@ import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/viewmodels/parkour_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+import '../../service/gps_service.dart';
 
 class CreateParkourPage extends StatefulWidget {
   const CreateParkourPage({super.key});
@@ -24,6 +27,7 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
   List<CheckPoint> checkPoints = [];
 
   String link = "";
+  Position? _currentPosition;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +42,11 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const Text("Parkur İsmi"),
+            const Text("Parkour Name"),
             TextField(
               controller: parkourNameController,
             ),
-            const Text("Parkur Açıklaması"),
+            const Text("Parkour Description"),
             TextField(
               controller: parkourDescriptionController,
             ),
@@ -115,8 +119,37 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
                     icon: const Icon(Icons.add_box_rounded))
               ],
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  _currentPosition = await GpsService().getLocation();
+                  setState(() {
+                    Future.delayed(Duration.zero).then((value) async {
+                      try {
+                        if (_currentPosition == null) {
+                          throw "Couldn't get location";
+                        }
+                        checkPoints.add(CheckPoint(
+                            id: (checkPoints.length).toString(),
+                            latitude: double.parse(
+                                _currentPosition!.latitude.toString()),
+                            longitude: double.parse(
+                                _currentPosition!.longitude.toString())));
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(title: Text(e.toString()));
+                          },
+                        );
+                      }
+                      ;
+                    });
+                  });
+                  ;
+                },
+                child: const Text("Add My Current Coordinate")),
             SizedBox(
-              height: 200,
+              height: 180,
               child: ListView.builder(
                 itemCount: checkPoints.length,
                 itemBuilder: (context, index) {
@@ -156,7 +189,7 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
 
                     await ParkourViewModel().addNewParkour(parkour);
                   },
-                  child: const Text("Gönder")),
+                  child: const Text("Create Parkour")),
             if (link.isNotEmpty)
               Image.network(
                 link,

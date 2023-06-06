@@ -3,6 +3,8 @@ import 'package:check_point/pages/home/HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../accounts/SocialAccountPage.dart';
+
 class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
   @override
@@ -12,7 +14,7 @@ class SocialPage extends StatefulWidget {
 class _SocialPageState extends State<SocialPage> {
   TextEditingController searchController = TextEditingController();
 
-  List<String> results = [];
+  List<Map> results = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +50,12 @@ class _SocialPageState extends State<SocialPage> {
               results = [];
 
               for (var element in snapshot.docs) {
-                results.add(element.data()["userName"]);
+                results.add(element.data());
               }
 
               setState(() {});
             },
-            child: const Text("Search blabla")),
+            child: const Text("Search")),
         const SizedBox(
           height: 20,
         ),
@@ -61,7 +63,15 @@ class _SocialPageState extends State<SocialPage> {
           child: ListView.builder(
             itemCount: results.length,
             itemBuilder: (context, index) {
-              return Text(results[index]);
+              return ListTile(
+                title: Text(results[index]["userName"]),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SocialAccountPage(
+                            key: ValueKey("socialAccountPageKey"),
+                            userId: (results[index]["id"] ?? " ")))),
+              );
             },
           ),
         )

@@ -5,8 +5,11 @@ import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/pages/social/SocialPage.dart';
 import 'package:check_point/service/gps_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../parkour/parkour_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,13 +54,21 @@ class _HomePageState extends State<HomePage> {
                 child: const Text("signout")),
             ElevatedButton(
                 onPressed: () {
-                  
                   GpsService().getLocation();
-
-                 
                 },
                 child: const Text("get current location")),
             Text(gpslocationtext),
+            Expanded(
+              child: RunsListView(
+                function: () async {
+                  return await FirebaseFirestore.instance
+                      .collection("runs")
+                      .orderBy("timeTaken")
+                      .limit(5)
+                      .get();
+                },
+              ),
+            )
           ],
         )),
         bottomNavigationBar: const CustomNavbar());

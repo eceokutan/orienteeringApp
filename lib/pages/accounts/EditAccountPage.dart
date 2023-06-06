@@ -18,7 +18,20 @@ class EditAccountPage extends StatefulWidget {
 }
 
 class _EditAccountPageState extends State<EditAccountPage> {
+  UserModel userInfo = UserModel();
   @override
+  void initState() {
+    AuthService()
+        .getUserInfo(FirebaseAuth.instance.currentUser!.uid)
+        .then((value) {
+      userInfo = UserModel().fromMap(value!);
+
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +41,36 @@ class _EditAccountPageState extends State<EditAccountPage> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              
+              /*
+              if (userInfo.profilePhoto!.isNotEmpty)
+                Image.file(
+                  userInfo.profilePhoto!.file!,
+                  alignment: Alignment.center,
+                  fit: BoxFit.cover,
+                  height: 200,
+                )
+              else
+                InkWell(
+                  onTap: () {
+                    ParkourViewModel()
+                        .pickParkourImages()
+                        .then((value) => setState(() {}));
+                  },
+                  child: Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    alignment: Alignment.center,
+                    height: 200,
+                    padding: const EdgeInsets.all(10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text("Add Image +", style: TextStyle()),
+                  ),
+                ),
+                */
             ],
           )),
     );

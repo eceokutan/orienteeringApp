@@ -36,6 +36,16 @@ class _RunPageState extends State<RunPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+              FirebaseFirestore.instance
+                  .collection("runs")
+                  .doc(widget.runModel.id)
+                  .delete();
+            },
+          ),
           title: Text(widget.runModel.parkour!.name),
         ),
         body: Column(
@@ -85,7 +95,8 @@ class _RunPageState extends State<RunPage> {
                     } else {
                       //end
                       await RunController()
-                          .endRun(widget.runModel.id!)
+                          .endRun(widget.runModel.id!,
+                              widget.runModel.startDateTime!)
                           .then((value) => showDialog(
                                 context: context,
                                 builder: (context) {

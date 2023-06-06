@@ -1,8 +1,8 @@
 class UserModel {
   String? email;
   String? userName;
-  List<dynamic>? followers;
-  List<dynamic>? following;
+  int? followers;
+  int? following;
   String? id;
   String? profilePhoto;
   List<String>? runIds;
