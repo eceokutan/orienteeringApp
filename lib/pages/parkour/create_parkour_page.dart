@@ -157,7 +157,7 @@ class _CreateParkourPageState extends State<CreateParkourPage> {
                   return Row(
                     children: [
                       Text(
-                          "${index + 1} ${checkPoint.longitude} - ${checkPoint.longitude}"),
+                          "${index + 1} ${checkPoint.latitude} - ${checkPoint.longitude}"),
                       const SizedBox(
                         width: 10,
                       ),

@@ -6,3 +6,13 @@
 //görsel olarak parkuru içermeli
 //tercihen kullanıcı post atarken bir başlık veya açıklama yazabilsin ("kolay parkurdu!" etc)
 //kullanıcı postlarken postu silme opsiyonuna sahip olmalı
+
+
+//LEADERBOARD
+//en iyi 5 koşu sırası ile görünecek. Koşan userın kullanıcı adı ve koşan kişinin süresi ile.
+//eğer yeni bir koşu daha kısa zamanda yapılmış ise o 5 kişi güncellenecek,daha iyi koşan leaderboardda görünecek
+//leaderboardlar parkurun başlama ekranında başla butonunun üstünde görünecek
+//____geliştirme:____
+//kişi kendi hesabında run post olarak sergilenirken eğer bir parkurun leaderboardındaysa gözükebilir:
+//run içerisinde leaderboard sayısı gibi bir değişken oluşturarak eğer ilk 5te değilse null verip eğer ilk 5teyse kaçıncı olduğu yazılabilir
+//eğer leaderboard değişince eskiden olanın konumu değişirse o eski rundaki leaderboardsayısı değişkeni güncelenebilir.

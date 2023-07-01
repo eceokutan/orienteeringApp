@@ -11,14 +11,6 @@ ParkourModel parkourModelFromJson(String str) =>
 
 String parkourModelToJson(ParkourModel data) => json.encode(data.toJson());
 
-List<int> sayilar = [1, 2, 3, 4];
-
-getsayilar() {
-  List<String> sayilarAsString = [];
-
-  sayilarAsString = sayilar.map((e) => "$e").toList();
-}
-
 class ParkourModel {
   ParkourModel(
       {this.name = "",

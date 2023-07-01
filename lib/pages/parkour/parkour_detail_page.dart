@@ -60,7 +60,7 @@ class ParkourDetailPage extends StatelessWidget {
                     .get();
               },
             ),
-          )
+          ),
         ],
       ),
     );
