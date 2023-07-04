@@ -1,3 +1,4 @@
+import 'package:check_point/models/leaderboard_item.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/models/user_model.dart';
@@ -17,7 +18,7 @@ class ParkourDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(parkour.name)),
-      body: Column(
+      body: ListView(
         children: [
           Image.network(parkour.mapImageUrl),
           TextButton(
@@ -49,18 +50,7 @@ class ParkourDetailPage extends StatelessWidget {
                 });
               },
               child: const Text("Başla")),
-          Expanded(
-            child: RunsListView(
-              function: () async {
-                return await FirebaseFirestore.instance
-                    .collection("runs")
-                    .where("parkourId", isEqualTo: parkour.id)
-                    .orderBy("timeTaken")
-                    .limit(5)
-                    .get();
-              },
-            ),
-          ),
+          RunsListView(myleaderboard: parkour.leaderBoard),
         ],
       ),
     );
@@ -68,42 +58,28 @@ class ParkourDetailPage extends StatelessWidget {
 }
 
 class RunsListView extends StatefulWidget {
-  RunsListView({Key? key, required this.function}) : super(key: key);
-
-  Function function;
+  RunsListView({Key? key, required this.myleaderboard}) : super(key: key);
+  List<LeaderboardItem> myleaderboard;
   @override
   State<RunsListView> createState() => _RunsListViewState();
 }
 
 class _RunsListViewState extends State<RunsListView> {
-  List<RunModel> runs = [];
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      var results = await widget.function();
-      for (var element in results.docs) {
-        runs.add(RunModel().fromMap(element.data()));
-      }
-      setState(() {});
-    });
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: runs.length,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: widget.myleaderboard.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(runs[index].userName.toString() +
-              runs[index].timeTaken.toString()),
+          title: Text(widget.myleaderboard[index].userName),
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SocialAccountPage(
                       key: ValueKey("socialAccountPageKey"),
-                      userId: (runs[index].userId ?? " ")))),
+                      userId: (widget.myleaderboard[index].userId ?? " ")))),
         );
       },
     );

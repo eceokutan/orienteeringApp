@@ -45,6 +45,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
+            ParkourViewModel().parkourImages.clear();
             Navigator.push(
               context,
               MaterialPageRoute(

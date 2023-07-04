@@ -32,7 +32,6 @@ class ParkourService {
 
     List<ParkourModel> parkours = [];
 
-    log(snapshot.docs.first.data().toString());
     for (var parkourAsMap in snapshot.docs) {
       parkours.add(ParkourModel.fromJson(parkourAsMap.data()));
     }

@@ -9,11 +9,14 @@
 //önce online şekilde yazarız, sonra geliştirmek istersek offline
 
 import 'package:check_point/models/check_point.dart';
+import 'package:check_point/models/leaderboard_item.dart';
+import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/run/run_controller.dart';
 import 'package:check_point/service/gps_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -36,6 +39,24 @@ class _RunPageState extends State<RunPage> {
     //leaderboard listesini çek.
     //ben ilk 5te miyim? kontrol et.
     //eğer ilk 5teysem ilk 5 listesini değiştir.
+  }
+
+  Future<void> getAndSetLeaderBoard(
+      String parkourId, LeaderboardItem newItem) async {
+    final myParkourSnapshot = await FirebaseFirestore.instance
+        .collection("parkours")
+        .doc(parkourId)
+        .get();
+    var myParkour = ParkourModel.fromJson(myParkourSnapshot.data()!);
+    var myLeaderBoard = myParkour.leaderBoard;
+    //yukarısı get leaderboard
+    myLeaderBoard.add(newItem);
+    myLeaderBoard.sort((a, b) => a.timeTaken.compareTo(b.timeTaken));
+    myParkour.leaderBoard = myLeaderBoard;
+    await FirebaseFirestore.instance
+        .collection("parkours")
+        .doc(parkourId)
+        .update(myParkour.toJson());
   }
 
   @override
@@ -99,30 +120,44 @@ class _RunPageState extends State<RunPage> {
                       await RunController()
                           .createCheck(checkModel, widget.runModel.id!);
                     } else {
+                      DateTime nowTime = DateTime.now();
+                      DateTime startTime =
+                          DateTime.parse(widget.runModel.startDateTime!);
+                      Duration totalTime = nowTime.difference(startTime);
+                      widget.runModel.timeTaken = totalTime.inMilliseconds;
                       //end
                       await RunController()
                           .endRun(widget.runModel.id!,
                               widget.runModel.startDateTime!)
-                          .then((value) => showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Text("completed"),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const HomePage()),
-                                                (route) => false);
-                                          },
-                                          child: Text("Go to Home Page"))
-                                    ],
-                                  );
-                                },
-                              ));
+                          .then((value) {
+                        getAndSetLeaderBoard(
+                            widget.runModel.parkour!.id,
+                            LeaderboardItem(
+                                userName: widget.runModel.userName!,
+                                userId: widget.runModel.userId!,
+                                runId: widget.runModel.id!,
+                                timeTaken: widget.runModel.timeTaken!));
+                        return showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text("completed"),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomePage()),
+                                          (route) => false);
+                                    },
+                                    child: Text("Go to Home Page"))
+                              ],
+                            );
+                          },
+                        );
+                      });
                     }
                   } else {
                     isPositionCorrect = false;
