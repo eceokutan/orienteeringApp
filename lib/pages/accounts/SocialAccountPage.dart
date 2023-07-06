@@ -28,7 +28,8 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        AuthService().getUserInfo(widget.userId)
+        AuthService()
+            .getUserInfo(widget.userId)
             //.getUserInfo(FirebaseAuth.instance.currentUser!.uid)
             .then((value) {
           userInfo = UserModel().fromMap(value!);
@@ -36,8 +37,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
           setState(() {});
         });
         alreadyFollowing = await SocialService().amIFollowing(widget.userId);
-        myaccount =
-            widget.userId == await FirebaseAuth.instance.currentUser!.uid;
+        myaccount = widget.userId == FirebaseAuth.instance.currentUser!.uid;
       },
     );
 
@@ -50,7 +50,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("@" + (userInfo.userName ?? "")),
+          title: Text("@${userInfo.userName ?? ""}"),
         ),
         body: Column(children: <Widget>[
           Container(
@@ -151,17 +151,31 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
               ),
             ]),
           ),
-          Expanded(
-            child: RunsListView(
-              function: () async {
-                return await FirebaseFirestore.instance
-                    .collection("runs")
-                    .where("userId", isEqualTo: widget.userId.toString())
-                    .orderBy("timeTaken")
-                    .get();
-              },
-            ),
-          )
+          // Expanded(
+          //   child: RunsListView(
+          //     function: () async {
+          //       return await FirebaseFirestore.instance
+          //           .collection("runs")
+          //           .where("userId", isEqualTo: widget.userId.toString())
+          //           .orderBy("timeTaken")
+          //           .get();
+          //     },
+          //   ),
+          // )
+
+          // Başkasının hesabına girdiğinde o kişinin tamamladığı koşuları görecek.
+          // Bu kişinin listelenen koşularda kaçıncı olduğu belirtilecek.
+
+// Home page
+// My account pagede
+// Social account page
+// 
+
+
+
+
+
+
         ]),
         bottomNavigationBar: const CustomNavbar());
   }

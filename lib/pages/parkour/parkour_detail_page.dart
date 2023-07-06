@@ -50,25 +50,25 @@ class ParkourDetailPage extends StatelessWidget {
                 });
               },
               child: const Text("Başla")),
-          RunsListView(myleaderboard: parkour.leaderBoard),
+          LeaderBoardListView(myleaderboard: parkour.leaderBoard),
         ],
       ),
     );
   }
 }
 
-class RunsListView extends StatefulWidget {
-  RunsListView({Key? key, required this.myleaderboard}) : super(key: key);
-  List<LeaderboardItem> myleaderboard;
+class LeaderBoardListView extends StatefulWidget {
+  const LeaderBoardListView({Key? key, required this.myleaderboard}) : super(key: key);
+  final List<LeaderboardItem> myleaderboard;
   @override
-  State<RunsListView> createState() => _RunsListViewState();
+  State<LeaderBoardListView> createState() => _LeaderBoardListViewState();
 }
 
-class _RunsListViewState extends State<RunsListView> {
+class _LeaderBoardListViewState extends State<LeaderBoardListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: widget.myleaderboard.length,
       itemBuilder: (context, index) {
@@ -78,7 +78,7 @@ class _RunsListViewState extends State<RunsListView> {
               context,
               MaterialPageRoute(
                   builder: (context) => SocialAccountPage(
-                      key: ValueKey("socialAccountPageKey"),
+                      key: const ValueKey("socialAccountPageKey"),
                       userId: (widget.myleaderboard[index].userId ?? " ")))),
         );
       },

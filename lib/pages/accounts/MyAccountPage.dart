@@ -138,19 +138,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   return EditAccountPage();
                 }));
               }),
-          Expanded(
-            child: RunsListView(
-              function: () async {
-                return await FirebaseFirestore.instance
-                    .collection("runs")
-                    .where("userId",
-                        isEqualTo:
-                            FirebaseAuth.instance.currentUser!.uid.toString())
-                    .orderBy("timeTaken")
-                    .get();
-              },
-            ),
-          )
+          // Expanded(
+          //   child: RunsListView(
+          //     function: () async {
+          //       return await FirebaseFirestore.instance
+          //           .collection("runs")
+          //           .where("userId",
+          //               isEqualTo:
+          //                   FirebaseAuth.instance.currentUser!.uid.toString())
+          //           .orderBy("timeTaken")
+          //           .get();
+          //     },
+          //   ),
+          // )
         ]),
         bottomNavigationBar: const CustomNavbar());
   }
