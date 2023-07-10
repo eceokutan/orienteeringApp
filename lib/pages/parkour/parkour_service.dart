@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:check_point/models/file_model.dart';
@@ -9,6 +8,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 
 class ParkourService {
+  ParkourService._private();
+
+  static final ParkourService _instance = ParkourService._private();
+
+  factory ParkourService() {
+    return _instance;
+  }
+
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
@@ -90,10 +97,29 @@ class ParkourService {
         .set(parkourmodel.toJson());
   }
 
-  updateParkour(ParkourModel parkourmodel) async {
-    await firebaseFirestore
+  Future<void> updateParkour(String parkourId, ParkourModel parkour) async {
+    await FirebaseFirestore.instance
         .collection("parkours")
-        .doc(parkourmodel.id)
-        .update(parkourmodel.toJson());
+        .doc(parkourId)
+        .update(parkour.toJson());
   }
+
+  Future<ParkourModel> getParkour(String parkourId) async {
+    final myParkourSnapshot = await FirebaseFirestore.instance
+        .collection("parkours")
+        .doc(parkourId)
+        .get();
+    var myParkour = ParkourModel.fromJson(myParkourSnapshot.data()!);
+
+    return myParkour;
+  }
+
+  Future<void> deleteParkour(String parkourId) async {
+    await FirebaseFirestore.instance
+        .collection("parkours")
+        .doc(parkourId)
+        .delete();
+  }
+
+  
 }

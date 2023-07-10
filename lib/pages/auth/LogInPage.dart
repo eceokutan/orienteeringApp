@@ -1,10 +1,11 @@
+import 'package:check_point/pages/_shared/error_dialog.dart';
 import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../service/auth_service.dart';
+import 'auth_service.dart';
 import 'SignUpPage.dart';
 
 class LogInPage extends StatefulWidget {
@@ -92,50 +93,13 @@ class _LogInPageState extends State<LogInPage> {
                                     builder: (context) => const HomePage()),
                                 (route) => false));
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text("HATA"),
-                                content: Text(e.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Tamam"))
-                                ],
-                              );
-                            },
-                          );
-                        } else if (e.code == 'wrong-password') {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text("HATA"),
-                                content: Text(e.toString()),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("Tamam"))
-                                ],
-                              );
-                            },
-                          );
-                        }
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ErrorDialog(e: e);
+                          },
+                        );
                       }
-
-                      // if (AuthService.successfullyLoggedIn()) {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const HomePage()),
-                      //   );
-                      // }
                     },
                   )),
               Row(
@@ -163,6 +127,8 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 }
+
+
 
 class RememberMeButton extends StatefulWidget {
   const RememberMeButton({

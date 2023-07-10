@@ -3,13 +3,13 @@ import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/run/run_page.dart';
-import 'package:check_point/service/parkour_service.dart';
+import 'package:check_point/pages/parkour/parkour_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:check_point/pages/accounts/SocialAccountPage.dart';
 import 'package:flutter/material.dart';
 
-import '../../service/auth_service.dart';
+import '../auth/auth_service.dart';
 
 class ParkourDetailPage extends StatelessWidget {
   const ParkourDetailPage({super.key, required this.parkour});

@@ -1,9 +1,7 @@
-import 'package:check_point/models/parkour_model.dart';
-import 'package:check_point/pages/home/HomePage.dart';
-import 'package:check_point/pages/accounts/MyAccountPage.dart';
+import 'package:check_point/pages/_shared/custom_navbar.dart';
+import 'package:check_point/pages/parkour/components/parkour_list_view.dart';
 import 'package:check_point/pages/parkour/create_parkour_page.dart';
-import 'package:check_point/pages/parkour/parkour_detail_page.dart';
-import 'package:check_point/viewmodels/parkour_view_model.dart';
+import 'package:check_point/pages/parkour/parkour_view_model.dart';
 import 'package:flutter/material.dart';
 
 class ParkoursPage extends StatefulWidget {
@@ -14,7 +12,6 @@ class ParkoursPage extends StatefulWidget {
 }
 
 class _ParkoursPageState extends State<ParkoursPage> {
-  ParkourViewModel parkourViewModel = ParkourViewModel();
   @override
   void initState() {
     ParkourViewModel().getParkours().then((value) {
@@ -33,14 +30,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text("Parkur Adet:${ParkourViewModel().parkours.length}"),
-          actions: [
-            ElevatedButton(
-                onPressed: () {
-                  //ParkourService().addAllParkours();
-                  setState(() {});
-                },
-                child: const Text("reload"))
-          ],
+          actions: const [],
         ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
@@ -56,36 +46,9 @@ class _ParkoursPageState extends State<ParkoursPage> {
             );
           },
         ),
-        body: Column(children: [
+        body: const Column(children: [
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                ParkourModel parkour = parkourViewModel.parkours[index];
-                return ListTile(
-                  title: Text(parkour.name),
-                  trailing: parkour.mapImageUrl == ""
-                      ? const SizedBox(
-                          child: Text("Fotoğraf Yok!"),
-                        )
-                      : Image.network(parkour.mapImageUrl),
-                  subtitle: Text(
-                    parkour.description,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ParkourDetailPage(parkour: parkour);
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-              itemCount: parkourViewModel.parkours.length,
-            ),
+            child: ParkoursListView(),
           )
         ]),
         bottomNavigationBar: const CustomNavbar());

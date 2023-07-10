@@ -1,6 +1,6 @@
 import 'package:check_point/models/file_model.dart';
 import 'package:check_point/models/parkour_model.dart';
-import 'package:check_point/service/parkour_service.dart';
+import 'package:check_point/pages/parkour/parkour_service.dart';
 
 class ParkourViewModel {
   ParkourViewModel._private();

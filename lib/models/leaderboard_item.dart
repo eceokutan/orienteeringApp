@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:check_point/models/check_point.dart';
-
 LeaderboardItem parkourModelFromJson(String str) =>
     LeaderboardItem.fromJson(json.decode(str));
 
@@ -25,7 +23,7 @@ class LeaderboardItem {
 
   factory LeaderboardItem.fromJson(Map<String, dynamic> json) =>
       LeaderboardItem(
-        userName: json["userName"],
+        userName: json["userName"] ?? "",
         userId: json["userId"],
         runId: json["runId"],
         timeTaken: json["timeTaken"],

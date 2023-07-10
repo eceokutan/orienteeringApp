@@ -1,8 +1,9 @@
 import 'package:check_point/models/user_model.dart';
+import 'package:check_point/pages/_shared/error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../service/auth_service.dart';
+import 'auth_service.dart';
 import 'LogInPage.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -103,20 +104,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              title: const Text("HATA"),
-                              content: Text(e.toString()),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Tamam"))
-                              ],
-                            );
+                            return ErrorDialog(e: e);
                           },
                         );
-
                         // if (e.code == 'weak-password') {
 
                         //   print('The password provided is too weak.');

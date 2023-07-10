@@ -10,13 +10,12 @@
 
 import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/leaderboard_item.dart';
-import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/pages/home/HomePage.dart';
-import 'package:check_point/pages/run/run_controller.dart';
+import 'package:check_point/pages/parkour/parkour_manager.dart';
+import 'package:check_point/pages/run/run_manager.dart';
 import 'package:check_point/service/gps_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -41,30 +40,12 @@ class _RunPageState extends State<RunPage> {
     //eğer ilk 5teysem ilk 5 listesini değiştir.
   }
 
-  Future<void> getAndSetLeaderBoard(
-      String parkourId, LeaderboardItem newItem) async {
-    final myParkourSnapshot = await FirebaseFirestore.instance
-        .collection("parkours")
-        .doc(parkourId)
-        .get();
-    var myParkour = ParkourModel.fromJson(myParkourSnapshot.data()!);
-    var myLeaderBoard = myParkour.leaderBoard;
-    //yukarısı get leaderboard
-    myLeaderBoard.add(newItem);
-    myLeaderBoard.sort((a, b) => a.timeTaken.compareTo(b.timeTaken));
-    myParkour.leaderBoard = myLeaderBoard;
-    await FirebaseFirestore.instance
-        .collection("parkours")
-        .doc(parkourId)
-        .update(myParkour.toJson());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
               FirebaseFirestore.instance
@@ -94,7 +75,7 @@ class _RunPageState extends State<RunPage> {
                 );
               },
             ),
-            Text("Next CheckPoint: ${checkPointId}" ?? "null"),
+            Text("Next CheckPoint: $checkPointId" ?? "null"),
             if (checkPointId == 0)
               Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
             if (checkPointId == 0)
@@ -106,7 +87,7 @@ class _RunPageState extends State<RunPage> {
                   CheckPoint currentCheckPoint =
                       widget.runModel.parkour!.checkPointList[checkPointId];
 
-                  if (RunController()
+                  if (RunManager()
                       .checkPosition(_currentPosition!, currentCheckPoint)) {
                     isPositionCorrect = true;
 
@@ -117,7 +98,7 @@ class _RunPageState extends State<RunPage> {
                         checkPointId: currentCheckPoint.id,
                         checkDateTime: DateTime.now(),
                       );
-                      await RunController()
+                      await RunManager()
                           .createCheck(checkModel, widget.runModel.id!);
                     } else {
                       DateTime nowTime = DateTime.now();
@@ -126,11 +107,11 @@ class _RunPageState extends State<RunPage> {
                       Duration totalTime = nowTime.difference(startTime);
                       widget.runModel.timeTaken = totalTime.inMilliseconds;
                       //end
-                      await RunController()
+                      await RunManager()
                           .endRun(widget.runModel.id!,
                               widget.runModel.startDateTime!)
                           .then((value) {
-                        getAndSetLeaderBoard(
+                        ParkourManager().getAndSetParkourLeaderBoard(
                             widget.runModel.parkour!.id,
                             LeaderboardItem(
                                 userName: widget.runModel.userName!,
@@ -141,7 +122,7 @@ class _RunPageState extends State<RunPage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: Text("completed"),
+                              content: const Text("completed"),
                               actions: [
                                 ElevatedButton(
                                     onPressed: () {
@@ -152,7 +133,7 @@ class _RunPageState extends State<RunPage> {
                                                   const HomePage()),
                                           (route) => false);
                                     },
-                                    child: Text("Go to Home Page"))
+                                    child: const Text("Go to Home Page"))
                               ],
                             );
                           },

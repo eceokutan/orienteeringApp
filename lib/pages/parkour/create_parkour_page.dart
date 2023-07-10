@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:check_point/models/check_point.dart';
 import 'package:check_point/models/parkour_model.dart';
-import 'package:check_point/viewmodels/parkour_view_model.dart';
+import 'package:check_point/pages/parkour/parkour_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 

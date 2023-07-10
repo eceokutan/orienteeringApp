@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-class RunController {
+class RunManager {
   //singleton kodu
-  RunController._();
+  RunManager._();
 
-  static final RunController _instance = RunController._();
+  static final RunManager _instance = RunManager._();
 
-  factory RunController() {
+  factory RunManager() {
     return _instance;
   }
 
@@ -26,28 +26,28 @@ class RunController {
     checkRef.set(checkModel.toMap());
   }
 
-  bool checkLatitude(Position _currentPosition, CheckPoint currentCheckPoint) {
-    if ((_currentPosition.latitude < currentCheckPoint.latitude! + tolerance) &&
-        (_currentPosition.latitude >
+  bool checkLatitude(Position currentPosition, CheckPoint currentCheckPoint) {
+    if ((currentPosition.latitude < currentCheckPoint.latitude! + tolerance) &&
+        (currentPosition.latitude >
             (currentCheckPoint.latitude! - tolerance))) {
       return true;
     }
     return false;
   }
 
-  bool checkLongitude(Position _currentPosition, CheckPoint currentCheckPoint) {
-    if ((_currentPosition.longitude <
+  bool checkLongitude(Position currentPosition, CheckPoint currentCheckPoint) {
+    if ((currentPosition.longitude <
             currentCheckPoint.longitude! + tolerance) &&
-        (_currentPosition.longitude >
+        (currentPosition.longitude >
             (currentCheckPoint.longitude! - tolerance))) {
       return true;
     }
     return false;
   }
 
-  bool checkPosition(Position _currentPosition, CheckPoint currentCheckPoint) {
-    if (checkLatitude(_currentPosition, currentCheckPoint) &&
-        checkLongitude(_currentPosition, currentCheckPoint)) {
+  bool checkPosition(Position currentPosition, CheckPoint currentCheckPoint) {
+    if (checkLatitude(currentPosition, currentCheckPoint) &&
+        checkLongitude(currentPosition, currentCheckPoint)) {
       return true;
     } else {
       return false;

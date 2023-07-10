@@ -1,7 +1,8 @@
 import 'package:check_point/models/user_model.dart';
+import 'package:check_point/pages/_shared/custom_navbar.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
-import 'package:check_point/service/auth_service.dart';
+import 'package:check_point/pages/auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

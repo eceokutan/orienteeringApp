@@ -1,14 +1,10 @@
+import 'package:check_point/pages/_shared/custom_navbar.dart';
 import 'package:check_point/pages/social/social_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../../models/user_model.dart';
-import '../../service/auth_service.dart';
-import '../home/HomePage.dart';
-import '../parkour/parkour_detail_page.dart';
+import '../auth/auth_service.dart';
 
 class SocialAccountPage extends StatefulWidget {
   String userId = "";
@@ -169,13 +165,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
 // Home page
 // My account pagede
 // Social account page
-// 
-
-
-
-
-
-
+//
         ]),
         bottomNavigationBar: const CustomNavbar());
   }
