@@ -1,4 +1,5 @@
 import 'package:check_point/pages/_shared/custom_navbar.dart';
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/social/social_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -147,6 +148,23 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
               ),
             ]),
           ),
+
+          Text(
+            userInfo.id.toString(),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
+
+          userInfo.id == null
+              ? const Center(child: CircularProgressIndicator())
+              : Expanded(
+                  child: RunsListView(
+                  userId: userInfo.id.toString(),
+                ))
+
           // Expanded(
           //   child: RunsListView(
           //     function: () async {

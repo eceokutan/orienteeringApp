@@ -1,9 +1,6 @@
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/_shared/custom_navbar.dart';
-import 'package:check_point/pages/_shared/runs_list_view.dart';
-import 'package:check_point/pages/home/HomePage.dart';
-import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/pages/auth/auth_service.dart';
 import 'package:check_point/pages/social/social_service.dart';
 import 'package:check_point/utilities.dart';
@@ -13,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:check_point/pages/accounts/EditAccountPage.dart';
 
 import '../parkour/parkour_detail_page.dart';
-import 'SocialAccountPage.dart';
 
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
@@ -141,51 +137,52 @@ class _MyAccountPageState extends State<MyAccountPage> {
               child: const Text("Edit Page"),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return EditAccountPage();
+                  return const EditAccountPage();
                 }));
               }),
           Expanded(
-              child: MyRunsListView(
-                  userId: FirebaseAuth.instance.currentUser!.uid))
+              child:
+                  RunsListView(userId: FirebaseAuth.instance.currentUser!.uid))
         ]),
         bottomNavigationBar: const CustomNavbar());
   }
 }
 
-class MyRunsListView extends StatefulWidget {
+class RunsListView extends StatefulWidget {
   final String? userId;
-  const MyRunsListView({
+  const RunsListView({
     Key? key,
     this.userId,
   }) : super(key: key);
 
   @override
-  State<MyRunsListView> createState() => _MyRunsListViewState();
+  State<RunsListView> createState() => _RunsListViewState();
 }
 
-class _MyRunsListViewState extends State<MyRunsListView> {
+class _RunsListViewState extends State<RunsListView> {
   List<RunModel> myRuns = [];
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      myRuns = await SocialService().getUsersRuns(widget.userId!);
+      myRuns = await SocialService().getUsersRuns(widget.userId);
       setState(() {});
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+      // physics: const NeverScrollableScrollPhysics(),
+      //   shrinkWrap: true,
       itemCount: myRuns.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text("@" + myRuns[index].userName!),
+          title: Text("@${myRuns[index].userName!}"),
           subtitle:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Time Taken: " +
-                Utilities.milisecondstotime(myRuns[index].timeTaken!)),
+            Text(
+                "Time Taken: ${Utilities.milisecondstotime(myRuns[index].timeTaken!)}"),
           ]),
           trailing: GestureDetector(
             child: Image.network(myRuns[index].parkour!.mapImageUrl),

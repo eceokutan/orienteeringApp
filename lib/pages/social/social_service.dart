@@ -105,15 +105,22 @@ class SocialService {
     return myvar.exists;
   }
 
-  Future<List<RunModel>> getUsersRuns(String userID) async {
+  Future<List<RunModel>> getUsersRuns(String? userID) async {
+    log("userID: $userID");
+
+    bool isHomePageRuns = userID == null;
+
     List<RunModel> runs = [];
     final snapshot = await FirebaseFirestore.instance
         .collection("runs")
         .where("userId", isEqualTo: userID)
+        .limit(isHomePageRuns ? 20 : 1000)
         .get();
     for (var doc in snapshot.docs) {
       runs.add(RunModel().fromMap(doc.data()));
     }
+
+    log("runs: $runs");
     return runs;
   }
 }

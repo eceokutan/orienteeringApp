@@ -1,4 +1,5 @@
 import 'package:check_point/pages/_shared/custom_navbar.dart';
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/auth/auth_manager.dart';
 import 'package:check_point/pages/social/SocialPage.dart';
 import 'package:check_point/service/gps_service.dart';
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: const Text("get current location")),
             Text(gpslocationtext),
+            const Expanded(child: RunsListView())
           ],
         )),
         bottomNavigationBar: const CustomNavbar());
