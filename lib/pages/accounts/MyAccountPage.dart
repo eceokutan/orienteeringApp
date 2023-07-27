@@ -6,6 +6,7 @@ import 'package:check_point/pages/home/HomePage.dart';
 import 'package:check_point/pages/parkour/ParkoursPage.dart';
 import 'package:check_point/pages/auth/auth_service.dart';
 import 'package:check_point/pages/social/social_service.dart';
+import 'package:check_point/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,14 +36,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
     });
 
     super.initState();
-  }
-
-  String milisecondstotime(int timeinms) {
-    double sec = timeinms / 1000;
-    double min = sec / 60;
-    int minutes = min.toInt();
-    int seconds = ((min - minutes) * 100).toInt();
-    return "$minutes minutes $seconds seconds";
   }
 
   //end of code for bottom nav
@@ -192,8 +185,7 @@ class _MyRunsListViewState extends State<MyRunsListView> {
           subtitle:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("Time Taken: " +
-                _MyAccountPageState()
-                    .milisecondstotime(myRuns[index].timeTaken!)),
+                Utilities.milisecondstotime(myRuns[index].timeTaken!)),
           ]),
           trailing: GestureDetector(
             child: Image.network(myRuns[index].parkour!.mapImageUrl),

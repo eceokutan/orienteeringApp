@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class RunManager {
-  //singleton kodu
+  //singleton code
   RunManager._();
 
   static final RunManager _instance = RunManager._();

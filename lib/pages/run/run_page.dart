@@ -34,12 +34,6 @@ class _RunPageState extends State<RunPage> {
   bool isPositionCorrect = false;
   int checkPointId = 0;
 
-  void checkLeaderBoard() {
-    //leaderboard listesini çek.
-    //ben ilk 5te miyim? kontrol et.
-    //eğer ilk 5teysem ilk 5 listesini değiştir.
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
