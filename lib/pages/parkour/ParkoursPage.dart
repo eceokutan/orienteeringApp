@@ -46,7 +46,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
             );
           },
         ),
-        body: const Column(children: [
+        body: Column(children: [
           Expanded(
             child: ParkoursListView(),
           )

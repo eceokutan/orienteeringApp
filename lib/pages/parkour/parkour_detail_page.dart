@@ -58,7 +58,8 @@ class ParkourDetailPage extends StatelessWidget {
 }
 
 class LeaderBoardListView extends StatefulWidget {
-  const LeaderBoardListView({Key? key, required this.myleaderboard}) : super(key: key);
+  const LeaderBoardListView({Key? key, required this.myleaderboard})
+      : super(key: key);
   final List<LeaderboardItem> myleaderboard;
   @override
   State<LeaderBoardListView> createState() => _LeaderBoardListViewState();

@@ -9,6 +9,7 @@
 //aynısının tersi
 import 'dart:developer';
 
+import 'package:check_point/models/run_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -102,5 +103,17 @@ class SocialService {
         .doc(userId)
         .get();
     return myvar.exists;
+  }
+
+  Future<List<RunModel>> getUsersRuns(String userID) async {
+    List<RunModel> runs = [];
+    final snapshot = await FirebaseFirestore.instance
+        .collection("runs")
+        .where("userId", isEqualTo: userID)
+        .get();
+    for (var doc in snapshot.docs) {
+      runs.add(RunModel().fromMap(doc.data()));
+    }
+    return runs;
   }
 }
