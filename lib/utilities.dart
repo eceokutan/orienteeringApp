@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 class Utilities {
   static String milisecondstotime(int timeinms) {
-    double sec = timeinms / 1000;
-    double min = sec / 60;
-    int minutes = min.toInt();
-    int seconds = ((min - minutes) * 100).toInt();
+    log("timeinms: $timeinms");
+
+    int seconds = (timeinms / 1000).floor();
+    int minutes = (seconds / 60).floor();
+    seconds = seconds - (minutes * 60);
+
     return "$minutes minutes $seconds seconds";
   }
 }
