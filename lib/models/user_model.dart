@@ -5,7 +5,7 @@ class UserModel {
   int? following;
   String? id;
   String? profilePhoto;
-  List<String>? runIds;
+  //List<String>? runIds;
 
   UserModel(
       {this.email,

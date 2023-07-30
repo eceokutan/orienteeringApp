@@ -46,6 +46,11 @@ class AuthService {
     return toReturn;
   }
 
+  static void forgotPassword(String email) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.sendPasswordResetEmail(email: email);
+  }
+
   static void setRememberMe(bool rememberme) async {
     var sharedPrefs = await SharedPreferences.getInstance();
 
@@ -62,7 +67,5 @@ class AuthService {
       email: email,
       password: password,
     );
-
-    
   }
 }

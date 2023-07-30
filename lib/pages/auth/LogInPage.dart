@@ -66,7 +66,16 @@ class _LogInPageState extends State<LogInPage> {
               const RememberMeButton(),
               TextButton(
                 onPressed: () {
-                  //forgot password screen
+                  try {
+                    AuthService.forgotPassword(nameController.text);
+                  } catch (exception) {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return Text(
+                              "Please enter your mail adress into the given space.");
+                        }));
+                  }
                 },
                 child: const Text(
                   'Forgot Password',
@@ -127,8 +136,6 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 }
-
-
 
 class RememberMeButton extends StatefulWidget {
   const RememberMeButton({
