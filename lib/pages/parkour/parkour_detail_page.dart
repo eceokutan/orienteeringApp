@@ -2,8 +2,9 @@ import 'package:check_point/models/leaderboard_item.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/models/user_model.dart';
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/run/run_page.dart';
-import 'package:check_point/pages/parkour/parkour_service.dart';
+import 'package:check_point/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:check_point/pages/accounts/SocialAccountPage.dart';
@@ -21,7 +22,7 @@ class ParkourDetailPage extends StatelessWidget {
       body: ListView(
         children: [
           Image.network(parkour.mapImageUrl),
-          TextButton(
+          ElevatedButton(
               onPressed: () async {
                 var runModelRef =
                     FirebaseFirestore.instance.collection("runs").doc();
@@ -74,7 +75,21 @@ class _LeaderBoardListViewState extends State<LeaderBoardListView> {
       itemCount: widget.myleaderboard.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(widget.myleaderboard[index].userName),
+          title: Row(
+            children: [
+              UserPhotoWidget(
+                userId: widget.myleaderboard[index].userId ?? " ",
+                radius: 20,
+              ),
+              const SizedBox(width: 10),
+              Text("@${widget.myleaderboard[index].userName}"),
+            ],
+          ),
+          subtitle: Text(Utilities.milisecondstotime(
+              widget.myleaderboard[index].timeTaken)),
+          trailing: Text("${index + 1}",
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(

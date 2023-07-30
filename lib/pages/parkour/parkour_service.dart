@@ -60,7 +60,7 @@ class ParkourService {
         quality: 30, percentage: 50);
   }
 
-  Future<List<FileModel>> pickParkourImages() async {
+  Future<List<FileModel>> pickImages() async {
     List<FileModel> imageFiles = [];
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -120,6 +120,4 @@ class ParkourService {
         .doc(parkourId)
         .delete();
   }
-
-  
 }

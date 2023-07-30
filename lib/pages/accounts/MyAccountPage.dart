@@ -1,13 +1,15 @@
+import 'package:check_point/models/file_model.dart';
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/_shared/custom_navbar.dart';
+import 'package:check_point/pages/auth/auth_manager.dart';
 import 'package:check_point/pages/auth/auth_service.dart';
+import 'package:check_point/pages/parkour/parkour_service.dart';
 import 'package:check_point/pages/social/social_service.dart';
 import 'package:check_point/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:check_point/pages/accounts/EditAccountPage.dart';
 
 import '../parkour/parkour_detail_page.dart';
 
@@ -41,6 +43,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text("My Account"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  AuthManager().signout(context);
+                },
+                icon: const Icon(Icons.logout))
+          ],
         ),
         body: Column(children: <Widget>[
           Container(
@@ -63,13 +72,26 @@ class _MyAccountPageState extends State<MyAccountPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const CircleAvatar(
-                      backgroundColor: Color.fromARGB(245, 255, 255, 255),
-                      minRadius: 55.0,
-                      child: CircleAvatar(
-                        radius: 50.0,
-                        backgroundColor: Colors.blue,
-                      )),
+                  InkWell(
+                    onTap: () async {
+                      List<FileModel> files =
+                          await ParkourService().pickImages();
+
+                      final result = await ParkourService().uploadSingleFile(
+                          file: files.first.file,
+                          childPath:
+                              "profileImages/${FirebaseAuth.instance.currentUser!.uid}/${files.first.fileName}");
+
+                      // set user profile photo
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .update({"profilePhoto": result});
+                    },
+                    child: UserPhotoWidget(
+                      userId: FirebaseAuth.instance.currentUser!.uid,
+                    ),
+                  ),
                   Column(
                     children: [
                       Text(
@@ -133,18 +155,63 @@ class _MyAccountPageState extends State<MyAccountPage> {
               ),
             ]),
           ),
-          ElevatedButton(
-              child: const Text("Edit Page"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const EditAccountPage();
-                }));
-              }),
           Expanded(
               child:
                   RunsListView(userId: FirebaseAuth.instance.currentUser!.uid))
         ]),
         bottomNavigationBar: const CustomNavbar());
+  }
+}
+
+class UserPhotoWidget extends StatelessWidget {
+  const UserPhotoWidget({
+    super.key,
+    required this.userId,
+    this.radius = 50,
+  });
+
+  final String userId;
+
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("users")
+            .doc(userId)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            if (((snapshot.data!.data() as Map)["profilePhoto"] != null) &&
+                ((snapshot.data!.data() as Map)["profilePhoto"] != "")) {
+              return CircleAvatar(
+                backgroundImage: NetworkImage(
+                    (snapshot.data!.data() as Map)["profilePhoto"]),
+                radius: radius,
+              );
+            }
+
+            return Center(
+                child: CircleAvatar(
+                    backgroundColor: const Color.fromARGB(245, 255, 255, 255),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.amber,
+                      radius: radius * 1.5,
+                      child: Text(
+                        (snapshot.data!.data() as Map)["userName"][0]
+                            .toString()
+                            .toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    )));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }
 
@@ -177,20 +244,78 @@ class _RunsListViewState extends State<RunsListView> {
       //   shrinkWrap: true,
       itemCount: myRuns.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text("@${myRuns[index].userName!}"),
-          subtitle:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-                "Time Taken: ${Utilities.milisecondstotime(myRuns[index].timeTaken!)}"),
-          ]),
-          trailing: GestureDetector(
-            child: Image.network(myRuns[index].parkour!.mapImageUrl),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      ParkourDetailPage(parkour: myRuns[index].parkour!)));
-            },
+        return Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  UserPhotoWidget(
+                    userId: myRuns[index].userId!,
+                    radius: 26,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text("@${myRuns[index].userName!}"),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+
+              // parkour name
+
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ParkourDetailPage(
+                            parkour: myRuns[index].parkour!)));
+                  },
+                  child: Text(myRuns[index].parkour!.name)),
+
+              Text(
+                  "Time Taken: ${Utilities.milisecondstotime(myRuns[index].timeTaken!)}"),
+              const SizedBox(
+                height: 10,
+              ),
+
+              Text(
+                "Start Date:${Utilities.dateTimeFromIsoString(myRuns[index].startDateTime!)}",
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // show full image
+
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              insetPadding: EdgeInsets.zero,
+                              child: Image.network(
+                                  myRuns[index].parkour!.mapImageUrl),
+                            );
+                          });
+                    },
+                    child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxHeight: 200,
+                        ),
+                        child:
+                            Image.network(myRuns[index].parkour!.mapImageUrl)),
+                  ),
+                ],
+              ),
+            ],
           ),
         );
       },

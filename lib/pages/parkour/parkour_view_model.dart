@@ -16,7 +16,7 @@ class ParkourViewModel {
   List<ParkourModel> parkours = [];
 
   Future<void> pickParkourImages() async {
-    parkourImages = await ParkourService().pickParkourImages();
+    parkourImages = await ParkourService().pickImages();
   }
 
   Future<String> uploadImage(FileModel file) async {
@@ -31,5 +31,4 @@ class ParkourViewModel {
   Future<void> getParkours() async {
     parkours = await ParkourService().getParkours();
   }
-  
 }

@@ -10,4 +10,17 @@ class Utilities {
 
     return "$minutes minutes $seconds seconds";
   }
+
+  static String dateTimeFromIsoString(String dateAsIsoString) {
+    String formattedDateTime = "";
+    try {
+      DateTime dateTime = DateTime.parse(dateAsIsoString);
+      formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+
+      return formattedDateTime;
+    } catch (e) {
+      formattedDateTime = dateAsIsoString;
+      return formattedDateTime;
+    }
+  }
 }

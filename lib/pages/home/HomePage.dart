@@ -2,7 +2,6 @@ import 'package:check_point/pages/_shared/custom_navbar.dart';
 import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/auth/auth_manager.dart';
 import 'package:check_point/pages/social/SocialPage.dart';
-import 'package:check_point/service/gps_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,22 +32,9 @@ class _HomePageState extends State<HomePage> {
           title: const Text("Home"),
           actions: const [],
         ),
-        body: Center(
+        body: const Center(
             child: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  AuthManager().signout(context);
-                },
-                child: const Text("signout")),
-            ElevatedButton(
-                onPressed: () {
-                  GpsService().getLocation();
-                },
-                child: const Text("get current location")),
-            Text(gpslocationtext),
-            const Expanded(child: RunsListView())
-          ],
+          children: [Expanded(child: RunsListView())],
         )),
         bottomNavigationBar: const CustomNavbar());
   }

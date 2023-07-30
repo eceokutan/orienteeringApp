@@ -105,6 +105,14 @@ class SocialService {
     return myvar.exists;
   }
 
+  Stream<DocumentSnapshot> amIFollowingAsStreamSnapshot(String userId) {
+    return usersRef
+        .doc(currentUserId)
+        .collection("followings")
+        .doc(userId)
+        .snapshots();
+  }
+
   Future<List<RunModel>> getUsersRuns(String? userID) async {
     log("userID: $userID");
 

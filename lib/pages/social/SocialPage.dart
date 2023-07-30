@@ -69,7 +69,7 @@ class _SocialPageState extends State<SocialPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SocialAccountPage(
-                            key: ValueKey("socialAccountPageKey"),
+                            key: const ValueKey("socialAccountPageKey"),
                             userId: (results[index]["id"] ?? " ")))),
               );
             },
