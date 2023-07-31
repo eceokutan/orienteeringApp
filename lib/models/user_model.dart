@@ -1,6 +1,6 @@
 class UserModel {
   String? userName;
-  int? followersCount;
+  int? followerCount;
   int? followingCount;
   String? _email;
   String? id;
@@ -26,7 +26,7 @@ class UserModel {
 
     user.email = map["email"];
     user.userName = map["userName"];
-    user.followersCount = map["followersCount"];
+    user.followerCount = map["followerCount"];
     user.followingCount = map["followingCount"];
     user.id = map["id"];
     user.profilePhoto = map["profilePhoto"];
@@ -41,7 +41,7 @@ class UserModel {
       "profilePhoto": profilePhoto,
       "isAdmin": false,
       "userName": userName,
-      "followersCount": followersCount,
+      "followerCount": followerCount,
       "followingCount": followingCount
     };
   }

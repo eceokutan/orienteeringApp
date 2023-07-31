@@ -100,7 +100,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
                                     ),
                                   ),
                                   Text(
-                                    (userInfo.followersCount ?? 0).toString(),
+                                    (userInfo.followerCount ?? 0).toString(),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
