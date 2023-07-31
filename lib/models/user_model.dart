@@ -1,28 +1,37 @@
 class UserModel {
-  String? email;
   String? userName;
-  int? followers;
-  int? following;
+  int? followersCount;
+  int? followingCount;
+  String? _email;
   String? id;
   String? profilePhoto;
   //List<String>? runIds;
 
-  UserModel(
-      {this.email,
-      this.userName,
-      this.followers,
-      this.following,
-      this.id,
-      this.profilePhoto});
+  // getters setters
+  String get email {
+    return _email ?? "";
+  }
+
+  set email(String email) {
+    if (!email.contains("@")) {
+      throw Exception("Email is not valid");
+    }
+    _email = email;
+  }
+
+  UserModel();
 
   UserModel fromMap(Map<String, dynamic> map) {
-    return UserModel(
-        email: map["email"],
-        userName: map["userName"],
-        followers: map["followers"],
-        following: map["following"],
-        id: map["id"],
-        profilePhoto: map["profilePhoto"]);
+    UserModel user = UserModel();
+
+    user.email = map["email"];
+    user.userName = map["userName"];
+    user.followersCount = map["followersCount"];
+    user.followingCount = map["followingCount"];
+    user.id = map["id"];
+    user.profilePhoto = map["profilePhoto"];
+
+    return user;
   }
 
   Map<String, dynamic> toMap() {
@@ -32,8 +41,8 @@ class UserModel {
       "profilePhoto": profilePhoto,
       "isAdmin": false,
       "userName": userName,
-      "followers": followers,
-      "following": following
+      "followersCount": followersCount,
+      "followingCount": followingCount
     };
   }
 }

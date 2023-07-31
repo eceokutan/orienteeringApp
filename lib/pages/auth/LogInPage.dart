@@ -65,16 +65,12 @@ class _LogInPageState extends State<LogInPage> {
               ),
               const RememberMeButton(),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   try {
-                    AuthService.forgotPassword(nameController.text);
+                    await AuthService.forgotPassword(nameController.text);
                   } catch (exception) {
-                    showDialog(
-                        context: context,
-                        builder: ((context) {
-                          return Text(
-                              "Please enter your mail adress into the given space.");
-                        }));
+                    showErrorDialog(context,
+                        "Please enter your mail adress into the given space.");
                   }
                 },
                 child: const Text(
@@ -134,6 +130,21 @@ class _LogInPageState extends State<LogInPage> {
             ],
           )),
     );
+  }
+
+  Future<dynamic> showErrorDialog(BuildContext context, String error) {
+    return showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+            content: SizedBox(
+              height: 100,
+              child: Column(
+                children: [Text(error)],
+              ),
+            ),
+          );
+        }));
   }
 }
 

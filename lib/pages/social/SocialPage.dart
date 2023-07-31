@@ -1,3 +1,4 @@
+import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/home/HomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,6 +65,13 @@ class _SocialPageState extends State<SocialPage> {
             itemCount: results.length,
             itemBuilder: (context, index) {
               return ListTile(
+                leading: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: UserPhotoWidget(
+                    userId: results[index]["id"],
+                  ),
+                ),
                 title: Text(results[index]["userName"]),
                 onTap: () => Navigator.push(
                     context,

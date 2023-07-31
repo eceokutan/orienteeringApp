@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:check_point/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,9 +44,10 @@ class AuthService {
     return toReturn;
   }
 
-  static void forgotPassword(String email) {
+  static Future<void> forgotPassword(String email) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    auth.sendPasswordResetEmail(email: email);
+
+    await auth.sendPasswordResetEmail(email: email);
   }
 
   static void setRememberMe(bool rememberme) async {

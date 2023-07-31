@@ -21,6 +21,12 @@ class SocialService {
   }
   final usersRef = FirebaseFirestore.instance.collection("users");
   final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+  var stream = FirebaseFirestore.instance
+      .collection("users")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
+
   void follow(String userId, String userName) async {
     addToFollowings(userId, userName);
     addToFollowers(userId, userName);

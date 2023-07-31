@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/_shared/error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,15 +85,32 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: const Text('Sign Up'),
                     onPressed: () async {
                       try {
+                        UserModel().email = mailController.text;
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ErrorDialog(e: e as Exception);
+                          },
+                        );
+
+                        return;
+                      }
+
+                      try {
                         await AuthService()
                             .signUp(
                                 email: mailController.text,
                                 password: passwordController.text)
                             .then((userCredantial) async {
-                          UserModel user = UserModel(
-                              id: userCredantial.user!.uid,
-                              userName: userNameController.text,
-                              email: userCredantial.user!.email!);
+                          UserModel user = UserModel();
+
+                          user.id = userCredantial.user!.uid;
+                          user.userName = userNameController.text;
+
+                          user.email = userCredantial.user!.email!;
+
+                          log(user.email.toString());
 
                           await AuthService().addUser(user).then((value) =>
                               Navigator.pushAndRemoveUntil(

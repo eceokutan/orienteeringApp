@@ -1,6 +1,5 @@
 import 'package:check_point/pages/_shared/custom_navbar.dart';
-import 'package:check_point/pages/accounts/MyAccountPage.dart';
-import 'package:check_point/pages/auth/auth_manager.dart';
+import 'package:check_point/pages/_shared/runs_list_view.dart';
 import 'package:check_point/pages/social/SocialPage.dart';
 import 'package:flutter/material.dart';
 

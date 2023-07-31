@@ -1,4 +1,5 @@
 import 'package:check_point/pages/_shared/custom_navbar.dart';
+import 'package:check_point/pages/_shared/runs_list_view.dart';
 import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/social/social_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,9 +9,9 @@ import 'package:flutter/material.dart';
 import '../../models/user_model.dart';
 
 class SocialAccountPage extends StatefulWidget {
-  String userId = "";
+  String userId;
 
-  SocialAccountPage({required Key key, required this.userId}) : super(key: key);
+  SocialAccountPage({super.key, required this.userId});
   //const SocialAccountPage({super.key});
   @override
   State<SocialAccountPage> createState() => _SocialAccountPageState();
@@ -73,13 +74,9 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const CircleAvatar(
-                          backgroundColor: Color.fromARGB(245, 255, 255, 255),
-                          minRadius: 55.0,
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundColor: Colors.blue,
-                          )),
+                      UserPhotoWidget(
+                        userId: widget.userId,
+                      ),
                       Column(
                         children: [
                           Text(
@@ -103,7 +100,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
                                     ),
                                   ),
                                   Text(
-                                    (userInfo.followers ?? 0).toString(),
+                                    (userInfo.followersCount ?? 0).toString(),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -126,7 +123,7 @@ class _SocialAccountPageState extends State<SocialAccountPage> {
                                     ),
                                   ),
                                   Text(
-                                    (userInfo.following ?? 0).toString(),
+                                    (userInfo.followingCount ?? 0).toString(),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,

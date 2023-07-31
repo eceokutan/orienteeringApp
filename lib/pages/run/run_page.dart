@@ -69,79 +69,119 @@ class _RunPageState extends State<RunPage> {
                 );
               },
             ),
-            Text("Next CheckPoint: $checkPointId" ?? "null"),
-            if (checkPointId == 0)
-              Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
-            if (checkPointId == 0)
-              Text(" currentLongitude: ${_currentPosition?.longitude}" ??
-                  "null"),
-            ElevatedButton(
-                onPressed: () async {
-                  _currentPosition = await GpsService().getLocation();
-                  CheckPoint currentCheckPoint =
-                      widget.runModel.parkour!.checkPointList[checkPointId];
+            const Divider(),
+            Text("Next CheckPoint: $checkPointId" ?? "",
+                style: const TextStyle(fontSize: 20)),
 
-                  if (RunManager()
-                      .checkPosition(_currentPosition!, currentCheckPoint)) {
-                    isPositionCorrect = true;
+            Text(
+                "Total CheckPoint Count: ${widget.runModel.parkour!.checkPointCount} " ??
+                    "",
+                style: const TextStyle(fontSize: 20)),
 
-                    if (checkPointId + 1 <
-                        widget.runModel.parkour!.checkPointList.length) {
-                      checkPointId++;
-                      CheckModel checkModel = CheckModel(
-                        checkPointId: currentCheckPoint.id,
-                        checkDateTime: DateTime.now(),
-                      );
-                      await RunManager()
-                          .createCheck(checkModel, widget.runModel.id!);
-                    } else {
-                      DateTime nowTime = DateTime.now();
-                      DateTime startTime =
-                          DateTime.parse(widget.runModel.startDateTime!);
-                      Duration totalTime = nowTime.difference(startTime);
-                      widget.runModel.timeTaken = totalTime.inMilliseconds;
-                      //end
-                      await RunManager()
-                          .endRun(widget.runModel.id!,
-                              widget.runModel.startDateTime!)
-                          .then((value) {
-                        ParkourManager().getAndSetParkourLeaderBoard(
-                            widget.runModel.parkour!.id,
-                            LeaderboardItem(
-                                userName: widget.runModel.userName!,
-                                userId: widget.runModel.userId!,
-                                runId: widget.runModel.id!,
-                                timeTaken: widget.runModel.timeTaken!));
-                        return showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: const Text("completed"),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HomePage()),
-                                          (route) => false);
-                                    },
-                                    child: const Text("Go to Home Page"))
-                              ],
-                            );
-                          },
+            // if (checkPointId == 0)
+            //   Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
+            // if (checkPointId == 0)
+            //   Text(" currentLongitude: ${_currentPosition?.longitude}" ??
+            //       "null"),
+
+            const SizedBox(
+              height: 50,
+            ),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                  onPressed: () async {
+                    _currentPosition = await GpsService().getLocation();
+                    CheckPoint currentCheckPoint =
+                        widget.runModel.parkour!.checkPointList[checkPointId];
+
+                    if (RunManager()
+                        .checkPosition(_currentPosition!, currentCheckPoint)) {
+                      isPositionCorrect = true;
+
+                      if (checkPointId + 1 <
+                          widget.runModel.parkour!.checkPointList.length) {
+                        checkPointId++;
+                        CheckModel checkModel = CheckModel(
+                          checkPointId: currentCheckPoint.id,
+                          checkDateTime: DateTime.now(),
                         );
-                      });
-                    }
-                  } else {
-                    isPositionCorrect = false;
-                  }
+                        await RunManager()
+                            .createCheck(checkModel, widget.runModel.id!);
+                      } else {
+                        DateTime nowTime = DateTime.now();
+                        DateTime startTime =
+                            DateTime.parse(widget.runModel.startDateTime!);
+                        Duration totalTime = nowTime.difference(startTime);
+                        widget.runModel.timeTaken = totalTime.inMilliseconds;
+                        //end
+                        await RunManager()
+                            .endRun(widget.runModel.id!,
+                                widget.runModel.startDateTime!)
+                            .then((value) {
+                          ParkourManager().getAndSetParkourLeaderBoard(
+                              widget.runModel.parkour!.id,
+                              LeaderboardItem(
+                                  userName: widget.runModel.userName!,
+                                  userId: widget.runModel.userId!,
+                                  runId: widget.runModel.id!,
+                                  timeTaken: widget.runModel.timeTaken!));
+                          return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: const Text("completed"),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomePage()),
+                                            (route) => false);
+                                      },
+                                      child: const Text("Go to Home Page"))
+                                ],
+                              );
+                            },
+                          );
+                        });
+                      }
+                    } else {
+                      isPositionCorrect = false;
 
-                  setState(() {});
-                },
-                child: const Text("Check")),
-            Text("Correct? ${isPositionCorrect ? "Correct" : "False"}"),
+                      return showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: const Text("Wrong Location"),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("OK"))
+                            ],
+                          );
+                        },
+                      );
+                    }
+
+                    setState(() {});
+                  },
+                  child: const Text("Check")),
+            ),
+
+            // const Row(
+            //   children: [
+            //     CircleAvatar(
+            //       radius: 20,
+            //     )
+            //   ],
+            // ),
+
+            //   Text("Correct? ${isPositionCorrect ? "Correct" : "False"}"),
           ],
         ));
   }
