@@ -65,11 +65,13 @@ class SocialService {
   void increaseFollowingCount() async {
     await usersRef
         .doc(currentUserId)
-        .update({"following": FieldValue.increment(1)});
+        .update({"followingCount": FieldValue.increment(1)});
   }
 
   void increaseFollowerCount(String userId) async {
-    await usersRef.doc(userId).update({"followers": FieldValue.increment(1)});
+    await usersRef
+        .doc(userId)
+        .update({"followerCount": FieldValue.increment(1)});
   }
 
   void removeFromFollowings(String userId) async {
@@ -95,11 +97,13 @@ class SocialService {
   void decreaseFollowingCount() async {
     await usersRef
         .doc(currentUserId)
-        .update({"following": FieldValue.increment(-1)});
+        .update({"followingCount": FieldValue.increment(-1)});
   }
 
   void decreaseFollowerCount(String userId) async {
-    await usersRef.doc(userId).update({"followers": FieldValue.increment(-1)});
+    await usersRef
+        .doc(userId)
+        .update({"followerCount": FieldValue.increment(-1)});
   }
 
   Future<bool> amIFollowing(String userId) async {
