@@ -59,7 +59,7 @@ class ParkoursListView extends StatelessWidget {
                     ),
 
                     Text(
-                      "Checkpoint Count: ${parkours.length}",
+                      "Checkpoint Count: ${parkour.checkPointCount}",
                     ),
 
                     const SizedBox(

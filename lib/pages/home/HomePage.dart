@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           title: const Text("Home"),
           actions: const [],
         ),
-        body: const Center(
+        body: Center(
             child: Column(
           children: [Expanded(child: RunsListView())],
         )),
