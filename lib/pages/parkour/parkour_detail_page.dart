@@ -50,7 +50,7 @@ class ParkourDetailPage extends StatelessWidget {
                   );
                 });
               },
-              child: const Text("Başla")),
+              child: const Text("Run")),
           LeaderBoardListView(myleaderboard: parkour.leaderBoard),
         ],
       ),
