@@ -32,7 +32,7 @@ class _ParkoursPageState extends State<ParkoursPage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("Parkur Adet:${ParkourViewModel().parkours.length}"),
+          title: Text("Parkour Count:${ParkourViewModel().parkours.length}"),
           actions: const [],
         ),
         floatingActionButton: const CreateParkourButton(),

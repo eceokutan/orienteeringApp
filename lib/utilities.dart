@@ -23,4 +23,8 @@ class Utilities {
       return formattedDateTime;
     }
   }
+
+  static String recursiveBinarySeach(List list) {
+    return "";
+  }
 }
