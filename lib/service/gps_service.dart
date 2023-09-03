@@ -35,7 +35,9 @@ class GpsService {
   Future<Position> getLocation() async {
     await isServiceEnabled();
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
+    print("lat" + position.latitude.toString());
+    print("long" + position.longitude.toString());
     return position;
   }
 }

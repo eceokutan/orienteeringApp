@@ -4,6 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
+//flutter: lat41.063716507916986 CHECKED
+//flutter: long28.972566970745504
+
+//flutter: lat41.06343459060022 GIVEN
+//flutter: long28.97250479802087
 class RunManager {
   //singleton code
   RunManager._();
@@ -14,7 +19,8 @@ class RunManager {
     return _instance;
   }
 
-  double tolerance = 0.00003;
+  double tolerance = 0.00015;
+  //0.00003
 
   Future createCheck(CheckModel checkModel, String id) async {
     var runRef = FirebaseFirestore.instance.collection("runs").doc(id);

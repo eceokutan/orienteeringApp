@@ -75,7 +75,7 @@ class _RunsListViewState extends State<RunsListView> {
                   child: Text(myRuns[index].parkour!.name)),
 
               Text(
-                  "Time Taken: ${Utilities.milisecondstotime(myRuns[index].timeTaken!)}"),
+                  "Time Taken: ${Utilities.milisecondstotime(myRuns[index].timeTaken ?? 0)}"),
               const SizedBox(
                 height: 10,
               ),
