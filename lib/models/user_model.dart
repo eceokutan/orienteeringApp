@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 class UserModel {
   String? userName;
   int? followerCount;
@@ -23,6 +25,10 @@ class UserModel {
 
   UserModel fromMap(Map<String, dynamic> map) {
     UserModel user = UserModel();
+
+
+
+
 
     user.email = map["email"];
     user.userName = map["userName"];

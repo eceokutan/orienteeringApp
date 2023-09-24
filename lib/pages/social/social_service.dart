@@ -123,22 +123,51 @@ class SocialService {
         .snapshots();
   }
 
+  // Future<List<RunModel>> getUsersRuns(String? userID) async {
+  //   log("userID: $userID");
+
+  //   bool isHomePageRuns = userID == null;
+
+  //   List<RunModel> runs = [];
+  //   final snapshot = await FirebaseFirestore.instance
+  //       .collection("runs")
+  //       .where("userId", isEqualTo: userID)
+  //       .limit(isHomePageRuns ? 20 : 1000)
+  //       .get();
+
+  //   for (var doc in snapshot.docs) {
+  //     runs.add(RunModel().fromMap(doc.data()));
+  //   }
+
+  //   log("runs: $runs");
+  //   return runs;
+  // }
+
   Future<List<RunModel>> getUsersRuns(String? userID) async {
     log("userID: $userID");
 
     bool isHomePageRuns = userID == null;
 
-    List<RunModel> runs = [];
     final snapshot = await FirebaseFirestore.instance
         .collection("runs")
         .where("userId", isEqualTo: userID)
         .limit(isHomePageRuns ? 20 : 1000)
         .get();
-    for (var doc in snapshot.docs) {
-      runs.add(RunModel().fromMap(doc.data()));
+
+    return processDocsRecursively(snapshot.docs, []);
+  }
+
+  Future<List<RunModel>> processDocsRecursively(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+      List<RunModel> runs) async {
+    if (docs.isEmpty) {
+      log("runs: $runs");
+      return runs;
     }
 
-    log("runs: $runs");
-    return runs;
+    var doc = docs.first;
+    runs.add(RunModel().fromMap(doc.data()));
+
+    return processDocsRecursively(docs.sublist(1), runs);
   }
 }
