@@ -73,18 +73,10 @@ class _RunPageState extends State<RunPage> {
               const Divider(),
               Text("Next CheckPoint: $checkPointId" ?? "",
                   style: const TextStyle(fontSize: 20)),
-
               Text(
                   "Total CheckPoint Count: ${widget.runModel.parkour!.checkPointCount} " ??
                       "",
                   style: const TextStyle(fontSize: 20)),
-
-              // if (checkPointId == 0)
-              //   Text("currentLatitude:  ${_currentPosition?.latitude}" ?? "null"),
-              // if (checkPointId == 0)
-              //   Text(" currentLongitude: ${_currentPosition?.longitude}" ??
-              //       "null"),
-
               const SizedBox(
                 height: 50,
               ),
@@ -152,11 +144,17 @@ class _RunPageState extends State<RunPage> {
                       } else {
                         isPositionCorrect = false;
 
+                        final difference = GpsService().getDistance(
+                            _currentPosition!,
+                            40.99450897665717,
+                            29.087145302716156);
+
                         return showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: const Text("Wrong Location"),
+                              content: Text(
+                                  "Wrong Location. Difference:$difference "),
                               actions: [
                                 ElevatedButton(
                                     onPressed: () {
@@ -173,16 +171,6 @@ class _RunPageState extends State<RunPage> {
                     },
                     child: const Text("Check")),
               ),
-
-              // const Row(
-              //   children: [
-              //     CircleAvatar(
-              //       radius: 20,
-              //     )
-              //   ],
-              // ),
-
-              //   Text("Correct? ${isPositionCorrect ? "Correct" : "False"}"),
             ],
           ),
         ));

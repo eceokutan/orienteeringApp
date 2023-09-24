@@ -188,14 +188,23 @@ class UserPhotoWidget extends StatelessWidget {
               );
             }
 
+            String userLetter = "";
+
+            if ((snapshot.data!.data() as Map)["userName"] == null) {
+              userLetter = "";
+            } else if ((snapshot.data!.data() as Map)["userName"].length == 0) {
+            } else {
+              (snapshot.data!.data() as Map)["userName"][0]
+                  .toString()
+                  .toUpperCase();
+            }
+
             return Center(
                 child: CircleAvatar(
               backgroundColor: Colors.amber,
               radius: radius,
               child: Text(
-                (snapshot.data!.data() as Map)["userName"][0]
-                    .toString()
-                    .toUpperCase(),
+                userLetter,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 20,

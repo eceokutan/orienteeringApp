@@ -1,16 +1,10 @@
 import 'package:check_point/models/leaderboard_item.dart';
 import 'package:check_point/models/parkour_model.dart';
-import 'package:check_point/models/run_model.dart';
-import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/accounts/MyAccountPage.dart';
-import 'package:check_point/pages/run/run_page.dart';
+import 'package:check_point/pages/run/run_manager.dart';
 import 'package:check_point/utilities.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:check_point/pages/accounts/SocialAccountPage.dart';
 import 'package:flutter/material.dart';
-
-import '../auth/auth_service.dart';
 
 class ParkourDetailPage extends StatelessWidget {
   const ParkourDetailPage({super.key, required this.parkour});
@@ -24,31 +18,7 @@ class ParkourDetailPage extends StatelessWidget {
           Image.network(parkour.mapImageUrl),
           ElevatedButton(
               onPressed: () async {
-                var runModelRef =
-                    FirebaseFirestore.instance.collection("runs").doc();
-                UserModel userInfo = UserModel();
-                AuthService()
-                    .getUserInfo(FirebaseAuth.instance.currentUser!.uid)
-                    .then((value) async {
-                  userInfo = UserModel().fromMap(value!);
-                  RunModel runModel = RunModel(
-                    id: runModelRef.id,
-                    parkour: parkour,
-                    userId: FirebaseAuth.instance.currentUser!.uid,
-                    userName: userInfo.userName,
-                    startDateTime: DateTime.now().toIso8601String(),
-                    parkourId: parkour.id,
-                  );
-                  await runModelRef.set(runModel.toMap());
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return RunPage(runModel: runModel);
-                      },
-                    ),
-                  );
-                });
+                await RunManager().createRun(parkour, context);
               },
               child: const Text("Run")),
           LeaderBoardListView(myleaderboard: parkour.leaderBoard),

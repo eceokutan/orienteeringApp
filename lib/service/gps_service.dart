@@ -35,9 +35,18 @@ class GpsService {
   Future<Position> getLocation() async {
     await isServiceEnabled();
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    print("lat" + position.latitude.toString());
-    print("long" + position.longitude.toString());
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
+    print("lat${position.latitude}");
+    print("long${position.longitude}");
     return position;
+  }
+
+  getDistance(Position currentPosition, double checkPointPositionlatitude,
+      double checkPointPositionlongitude) {
+    return Geolocator.distanceBetween(
+        currentPosition.latitude,
+        currentPosition.longitude,
+        checkPointPositionlatitude,
+        checkPointPositionlongitude);
   }
 }

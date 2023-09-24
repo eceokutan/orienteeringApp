@@ -34,79 +34,96 @@ class ParkoursListView extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(parkour.name,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(parkour.name,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                    // parkour name
+                      // parkour name
 
-                    Text(
-                      parkour.description,
-                    ),
+                      FittedBox(
+                        child: Text(
+                          parkour.description,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                    Text(
-                      "Checkpoint Count: ${parkour.checkPointCount}",
-                    ),
+                      Text(
+                        "Checkpoint Count: ${parkour.checkPointCount}",
+                      ),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                    Text(
-                      "Created By: ${parkour.createdBy}",
-                    ),
+                      Text(
+                        "Created By: ${parkour.createdBy}",
+                      ),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                    Text(
-                      "Created At: ${Utilities.dateTimeFromIsoString(parkour.createdDate)}",
-                    ),
+                      Text(
+                        "Created At: ${Utilities.dateTimeFromIsoString(parkour.createdDate)}",
+                      ),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // show full image
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // show full image
 
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                insetPadding: EdgeInsets.zero,
-                                child: Image.network(parkour.mapImageUrl),
-                              );
-                            });
-                      },
-                      child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxHeight: 100,
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  insetPadding: EdgeInsets.zero,
+                                  child: Image.network(parkour.mapImageUrl),
+                                );
+                              });
+                        },
+                        child: Container(
+                          height: 150,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
                           ),
-                          child: Image.network(parkour.mapImageUrl)),
-                    ),
-                  ],
+                          child: Image.network(
+                            parkour.mapImageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
