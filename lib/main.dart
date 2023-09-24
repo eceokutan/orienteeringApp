@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.orange,
         ),
+        debugShowCheckedModeBanner: false,
         //home: const HomePage());
         //home: const ParkoursPage());
         home: FirebaseAuth.instance.currentUser == null
