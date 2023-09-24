@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:check_point/models/run_model.dart';
 import 'package:check_point/pages/accounts/MyAccountPage.dart';
 import 'package:check_point/pages/accounts/SocialAccountPage.dart';
@@ -19,11 +21,11 @@ class RunsListView extends StatefulWidget {
 }
 
 class _RunsListViewState extends State<RunsListView> {
-  List<RunModel> myRuns = [];
+  Queue<RunModel> myRuns2 = Queue();
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      myRuns = await SocialService().getUsersRuns(widget.userId);
+      myRuns2 = await SocialService().getUsersRuns(widget.userId);
       setState(() {});
     });
     super.initState();
@@ -31,6 +33,8 @@ class _RunsListViewState extends State<RunsListView> {
 
   @override
   Widget build(BuildContext context) {
+    List<RunModel> myRuns = myRuns2.toList();
+
     return ListView.builder(
       // physics: const NeverScrollableScrollPhysics(),
       //   shrinkWrap: true,

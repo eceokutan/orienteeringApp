@@ -7,6 +7,7 @@
 //ek: collectionda sadece user id ve userName tutulacak
 //unfollow tuşuna basılınca:
 //aynısının tersi
+import 'dart:collection';
 import 'dart:developer';
 
 import 'package:check_point/models/run_model.dart';
@@ -143,7 +144,7 @@ class SocialService {
   //   return runs;
   // }
 
-  Future<List<RunModel>> getUsersRuns(String? userID) async {
+  Future< Queue<RunModel>> getUsersRuns(String? userID) async {
     log("userID: $userID");
 
     bool isHomePageRuns = userID == null;
@@ -154,17 +155,18 @@ class SocialService {
         .limit(isHomePageRuns ? 20 : 1000)
         .get();
 
-    return processDocsRecursively(snapshot.docs, []);
+    return processDocsRecursively(snapshot.docs, Queue<RunModel>());
   }
 
-  Future<List<RunModel>> processDocsRecursively(
+  Future< Queue<RunModel>> processDocsRecursively(
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
-      List<RunModel> runs) async {
+      Queue<RunModel> runs) async {
     if (docs.isEmpty) {
       log("runs: $runs");
       return runs;
     }
 
+  
     var doc = docs.first;
     runs.add(RunModel().fromMap(doc.data()));
 
