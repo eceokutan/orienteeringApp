@@ -10,30 +10,20 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-
-
   List<String> _list = ['a', 'b', 'c'];
 
-  
-
-  addList(){
+  addList() {
     _list.add('d');
 
     Queue();
 
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
-  removeList(){
+  removeList() {
     _list.removeLast();
-    setState(() {
-      
-    });
+    setState(() {});
   }
-
-
 
   @override
   Widget build(BuildContext context) {

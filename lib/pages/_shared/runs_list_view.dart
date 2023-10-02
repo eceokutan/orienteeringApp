@@ -25,7 +25,7 @@ class _RunsListViewState extends State<RunsListView> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      myRuns2 = await SocialService().getUsersRuns(widget.userId);
+      myRuns2 = Queue.from(await SocialService().getUsersRuns(widget.userId));
       setState(() {});
     });
     super.initState();

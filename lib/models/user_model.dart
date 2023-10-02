@@ -4,10 +4,9 @@ class UserModel {
   String? userName;
   int? followerCount;
   int? followingCount;
-  String? _email;
   String? id;
   String? profilePhoto;
-  //List<String>? runIds;
+  String? _email;
 
   // getters setters
   String get email {
@@ -25,10 +24,6 @@ class UserModel {
 
   UserModel fromMap(Map<String, dynamic> map) {
     UserModel user = UserModel();
-
-
-
-
 
     user.email = map["email"];
     user.userName = map["userName"];

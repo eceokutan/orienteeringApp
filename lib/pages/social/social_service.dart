@@ -144,11 +144,9 @@ class SocialService {
   //   return runs;
   // }
 
-  Future< Queue<RunModel>> getUsersRuns(String? userID) async {
+  Future<Queue<RunModel>> getUsersRuns(String? userID) async {
     log("userID: $userID");
-
     bool isHomePageRuns = userID == null;
-
     final snapshot = await FirebaseFirestore.instance
         .collection("runs")
         .where("userId", isEqualTo: userID)
@@ -158,15 +156,13 @@ class SocialService {
     return processDocsRecursively(snapshot.docs, Queue<RunModel>());
   }
 
-  Future< Queue<RunModel>> processDocsRecursively(
+  Future<Queue<RunModel>> processDocsRecursively(
       List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
       Queue<RunModel> runs) async {
     if (docs.isEmpty) {
       log("runs: $runs");
       return runs;
     }
-
-  
     var doc = docs.first;
     runs.add(RunModel().fromMap(doc.data()));
 
