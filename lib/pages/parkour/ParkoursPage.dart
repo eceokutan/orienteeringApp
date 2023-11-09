@@ -1,3 +1,4 @@
+import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/pages/_shared/custom_navbar.dart';
 import 'package:check_point/pages/parkour/components/parkour_list_view.dart';
 import 'package:check_point/pages/parkour/create_parkour_page.dart';
@@ -14,18 +15,11 @@ class ParkoursPage extends StatefulWidget {
 }
 
 class _ParkoursPageState extends State<ParkoursPage> {
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      await ParkourViewModel().getParkours();
-      setState(() {});
-    });
-    super.initState();
-  }
-
   //code for bottom nav
 
   //end of code for bottom nav
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +31,39 @@ class _ParkoursPageState extends State<ParkoursPage> {
         ),
         floatingActionButton: const CreateParkourButton(),
         body: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              onChanged: (value) {
+                setState(() {});
+              },
+              decoration: const InputDecoration(hintText: "Search Parkour"),
+            ),
+          ),
           Expanded(
-            child: ParkoursListView(
-              parkours: ParkourViewModel().parkours,
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance
+                  .collection("parkours")
+                  .where("name",
+                      isGreaterThanOrEqualTo: searchController.text == ""
+                          ? null
+                          : searchController.text)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ParkoursListView(
+                    parkours: snapshot.data!.docs
+                        .map((e) => ParkourModel.fromJson(e.data()))
+                        .toList(),
+                  );
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const CircularProgressIndicator.adaptive();
+                } else {
+                  return const Text("Not Found!");
+                }
+              },
             ),
           )
         ]),

@@ -1,4 +1,4 @@
-import 'package:check_point/custom_text_field.dart';
+import 'package:check_point/main.dart';
 import 'package:check_point/pages/_shared/error_dialog.dart';
 import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/home/HomePage.dart';
@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth_service.dart';
 import 'SignUpPage.dart';
+import 'auth_service.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -26,23 +26,7 @@ class _LogInPageState extends State<LogInPage> {
           padding: const EdgeInsets.all(10),
           child: ListView(
             children: <Widget>[
-              Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'CheckPoint',
-                    style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 30),
-                  )),
-              Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Log in',
-                    style: TextStyle(fontSize: 20),
-                  )),
+              const LogoWidget(),
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
@@ -78,43 +62,40 @@ class _LogInPageState extends State<LogInPage> {
                   'Forgot Password',
                 ),
               ),
-              Container(
-                  height: 50,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: AsyncButton(
-                    child: const Text('Log In'),
-                    onPressed: () async {
-                      // nameController.text = "admin@gmail.com";
-                      // passwordController.text = "admin12345";
+              AsyncButton(
+                child: const Text('Log In'),
+                onPressed: () async {
+                  // nameController.text = "admin@gmail.com";
+                  // passwordController.text = "admin12345";
 
-                      try {
-                        await AuthService()
-                            .logIn(
-                              email: nameController.text,
-                              password: passwordController.text,
-                            )
-                            .then((value) => Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()),
-                                (route) => false));
-                      } on FirebaseAuthException catch (e) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ErrorDialog(e: e);
-                          },
-                        );
-                      }
-                    },
-                  )),
+                  try {
+                    await AuthService()
+                        .logIn(
+                          email: nameController.text,
+                          password: passwordController.text,
+                        )
+                        .then((value) => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                            (route) => false));
+                  } on FirebaseAuthException catch (e) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ErrorDialog(e: e);
+                      },
+                    );
+                  }
+                },
+              ),
               Row(
                 // ignore: sort_child_properties_last
                 children: <Widget>[
                   const Text('Don\'t have an account?'),
                   TextButton(
                     child: const Text(
-                      'Sign in',
+                      'Sign Up',
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {

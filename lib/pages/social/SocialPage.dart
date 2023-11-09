@@ -32,58 +32,62 @@ class _SocialPageState extends State<SocialPage> {
           ),
         ),
       ),
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          TextField(
             controller: searchController,
+            decoration: const InputDecoration(hintText: "Search Username"),
           ),
-        ),
-        AsyncButton(
-            onPressed: () async {
-              //
-              // asd
-              var snapshot = await FirebaseFirestore.instance
-                  .collection("users")
-                  .where("userName", isEqualTo: searchController.text)
-                  .get();
+          const SizedBox(
+            height: 10,
+          ),
+          AsyncButton(
+              onPressed: () async {
+                //
+                // asd
+                var snapshot = await FirebaseFirestore.instance
+                    .collection("users")
+                    .where("userName", isEqualTo: searchController.text)
+                    .get();
 
-              results = [];
+                results = [];
 
-              for (var element in snapshot.docs) {
-                results.add(element.data());
-              }
+                for (var element in snapshot.docs) {
+                  results.add(element.data());
+                }
 
-              setState(() {});
-            },
-            child: const Text("Search")),
-        const SizedBox(
-          height: 20,
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: UserPhotoWidget(
-                    userId: results[index]["id"],
+                setState(() {});
+              },
+              child: const Text("Search")),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: results.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: UserPhotoWidget(
+                      userId: results[index]["id"],
+                    ),
                   ),
-                ),
-                title: Text(results[index]["userName"]),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SocialAccountPage(
-                            key: const ValueKey("socialAccountPageKey"),
-                            userId: (results[index]["id"] ?? " ")))),
-              );
-            },
-          ),
-        )
-      ]),
+                  title: Text(results[index]["userName"]),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SocialAccountPage(
+                              key: const ValueKey("socialAccountPageKey"),
+                              userId: (results[index]["id"] ?? " ")))),
+                );
+              },
+            ),
+          )
+        ]),
+      ),
     );
   }
 }

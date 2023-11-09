@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:check_point/models/file_model.dart';
 import 'package:check_point/models/user_model.dart';
 import 'package:check_point/pages/_shared/custom_navbar.dart';
@@ -179,6 +181,8 @@ class UserPhotoWidget extends StatelessWidget {
             .snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
+            log(snapshot.data!.data().toString());
+
             if (((snapshot.data!.data() as Map)["profilePhoto"] != null) &&
                 ((snapshot.data!.data() as Map)["profilePhoto"] != "")) {
               return CircleAvatar(
@@ -194,7 +198,7 @@ class UserPhotoWidget extends StatelessWidget {
               userLetter = "";
             } else if ((snapshot.data!.data() as Map)["userName"].length == 0) {
             } else {
-              (snapshot.data!.data() as Map)["userName"][0]
+              userLetter = (snapshot.data!.data() as Map)["userName"][0]
                   .toString()
                   .toUpperCase();
             }

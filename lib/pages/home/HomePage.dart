@@ -11,11 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //code for bottom nav
-
-  //end of code for bottom nav
-  String gpslocationtext = "gps text";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +24,8 @@ class _HomePageState extends State<HomePage> {
                 Icons.people, // add custom icons also
               )),
           title: const Text("Home"),
-          actions: const [],
         ),
-        body: Center(
+        body: const Center(
             child: Column(
           children: [Expanded(child: RunsListView())],
         )),

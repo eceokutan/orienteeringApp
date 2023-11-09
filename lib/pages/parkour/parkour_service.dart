@@ -32,17 +32,15 @@ class ParkourService {
     return url;
   }
 
-  List<Map<String, dynamic>> parkourListAsMap = [];
+  Stream<QuerySnapshot<Map<String, dynamic>>> getParkours() {
+    return FirebaseFirestore.instance.collection("parkours").snapshots();
 
-  Future<List<ParkourModel>> getParkours() async {
-    var snapshot = await firebaseFirestore.collection("parkours").get();
+    // List<ParkourModel> parkours = [];
 
-    List<ParkourModel> parkours = [];
-
-    for (var parkourAsMap in snapshot.docs) {
-      parkours.add(ParkourModel.fromJson(parkourAsMap.data()));
-    }
-    return parkours;
+    // for (var parkourAsMap in snapshot.docs) {
+    //   parkours.add(ParkourModel.fromJson(parkourAsMap.data()));
+    // }
+    // return parkours;
   }
 
   /*

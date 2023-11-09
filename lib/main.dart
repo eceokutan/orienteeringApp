@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:check_point/pages/auth/LogInPage.dart';
 import 'package:check_point/pages/auth/SignUpPage.dart';
 import 'package:check_point/pages/home/HomePage.dart';
@@ -61,58 +59,41 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
     super.initState();
-
-    // if (FirebaseAuth.instance.currentUser != null) {
-    //   if (sharedPrefs.getBool("rememberMe") ?? false) {
-    //     Future.delayed(Duration.zero, () {
-    //       Navigator.push(context,
-    //           MaterialPageRoute(builder: (context) => const HomePage()));
-    //     });
-    //   }
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'images/compass.png',
-              width: 200,
-              height: 200,
-              fit: BoxFit.cover,
+            const LogoWidget(),
+            const SizedBox(
+              height: 20,
             ),
-            Text(
-              "CheckPoint",
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 48,
-                color: Colors.black.withOpacity(1.0),
-                height: 1.5,
+            SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                child: const Text('Log In'),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const LogInPage();
+                    },
+                  ), (route) => false);
+                },
               ),
             ),
-            Container(
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
                 height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: ElevatedButton(
-                  child: const Text('Log In'),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) {
-                        return const LogInPage();
-                      },
-                    ), (route) => false);
-                  },
-                )),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.infinity,
                 child: ElevatedButton(
                   child: const Text('Sign Up'),
                   onPressed: () {
@@ -126,6 +107,35 @@ class _FirstPageState extends State<FirstPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LogoWidget extends StatelessWidget {
+  const LogoWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset(
+          'images/compass.png',
+          width: 150,
+          height: 150,
+          fit: BoxFit.cover,
+        ),
+        Text(
+          "CheckPoint",
+          style: TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 48,
+            color: Colors.black.withOpacity(1.0),
+            height: 1.5,
+          ),
+        ),
+      ],
     );
   }
 }

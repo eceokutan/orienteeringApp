@@ -144,16 +144,14 @@ class SocialService {
   //   return runs;
   // }
 
-  Future<Queue<RunModel>> getUsersRuns(String? userID) async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUsersRuns(String? userID) {
     log("userID: $userID");
     bool isHomePageRuns = userID == null;
-    final snapshot = await FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection("runs")
         .where("userId", isEqualTo: userID)
         .limit(isHomePageRuns ? 20 : 1000)
-        .get();
-
-    return processDocsRecursively(snapshot.docs, Queue<RunModel>());
+        .snapshots();
   }
 
   Future<Queue<RunModel>> processDocsRecursively(

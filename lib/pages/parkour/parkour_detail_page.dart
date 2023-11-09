@@ -1,9 +1,10 @@
 import 'package:check_point/models/leaderboard_item.dart';
 import 'package:check_point/models/parkour_model.dart';
 import 'package:check_point/pages/accounts/MyAccountPage.dart';
+import 'package:check_point/pages/accounts/SocialAccountPage.dart';
+import 'package:check_point/pages/async_button.dart';
 import 'package:check_point/pages/run/run_manager.dart';
 import 'package:check_point/utilities.dart';
-import 'package:check_point/pages/accounts/SocialAccountPage.dart';
 import 'package:flutter/material.dart';
 
 class ParkourDetailPage extends StatelessWidget {
@@ -13,16 +14,31 @@ class ParkourDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(parkour.name)),
-      body: ListView(
-        children: [
-          Image.network(parkour.mapImageUrl),
-          ElevatedButton(
-              onPressed: () async {
-                await RunManager().createRun(parkour, context);
-              },
-              child: const Text("Run")),
-          LeaderBoardListView(myleaderboard: parkour.leaderBoard),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView(
+          children: [
+            Image.network(parkour.mapImageUrl),
+            const SizedBox(
+              height: 10,
+            ),
+            AsyncButton(
+                onPressed: () async {
+                  await RunManager().createRun(parkour, context);
+                },
+                child: const Text("Run")),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  "Score Board",
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+            LeaderBoardListView(myleaderboard: parkour.leaderBoard),
+          ],
+        ),
       ),
     );
   }

@@ -28,7 +28,5 @@ class ParkourViewModel {
     await ParkourService().addParkour(parkour);
   }
 
-  Future<void> getParkours() async {
-    parkours = await ParkourService().getParkours();
-  }
+  
 }
